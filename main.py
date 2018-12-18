@@ -40,8 +40,10 @@ def sort_ships(ships_dict, stat='HP'):
 def main():
     (ship_dict) = parse_data()
     # TODO find a way to filter based on Nation if desired
-    print("Sorting by HP")
-    ship_sorted = sort_ships(ship_dict, 'HP')
+    # This is the stat we wish to sort by
+    stat = input('Enter the stat you would like to sort by: ')
+    print("Sorting by " + stat)
+    ship_sorted = sort_ships(ship_dict, stat)
     #print(ship_sorted)
     (backline, frontline) = find_line(ship_sorted)
     # Print the top 3 for each line
