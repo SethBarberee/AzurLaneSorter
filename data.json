@@ -1,5 +1,6 @@
 [
-    { "Name": "Hood", 
+    {
+        "Name": "Hood",
         "Class": "BC",
         "Nation": "Royal Navy",
         "HP": "A",
@@ -11,7 +12,8 @@
         "Evasion": "C",
         "Cost": 14
     },
-    { "Name": "Illustrious", 
+    {
+        "Name": "Illustrious",
         "Class": "CV",
         "Nation": "Royal Navy",
         "HP": "S",
@@ -23,7 +25,8 @@
         "Evasion": "D",
         "Cost": 13
     },
-    { "Name": "Atago", 
+    {
+        "Name": "Atago",
         "Class": "CA",
         "Nation": "Sakura Empire",
         "HP": "A",
@@ -35,7 +38,8 @@
         "Evasion": "C",
         "Cost": 12
     },
-    { "Name": "Washington", 
+    {
+        "Name": "Washington",
         "Class": "BB",
         "Nation": "Eagle Union",
         "HP": "S",
@@ -47,7 +51,8 @@
         "Evasion": "D",
         "Cost": 15
     },
-    { "Name": "Laffey", 
+    {
+        "Name": "Laffey",
         "Class": "DD",
         "Nation": "Eagle Union",
         "HP": "C",
@@ -59,7 +64,8 @@
         "Evasion": "A",
         "Cost": 9
     },
-    { "Name": "Erebus", 
+    {
+        "Name": "Erebus",
         "Class": "CM",
         "Nation": "Royal Navy",
         "HP": "C",
@@ -71,7 +77,8 @@
         "Evasion": "E",
         "Cost": 10
     },
-    { "Name": "Helena", 
+    {
+        "Name": "Helena",
         "Class": "CL",
         "Nation": "Eagle Union",
         "HP": "C",
@@ -83,7 +90,8 @@
         "Evasion": "B",
         "Cost": 10
     },
-    { "Name": "Belfast", 
+    {
+        "Name": "Belfast",
         "Class": "CL",
         "Nation": "Royal Navy",
         "HP": "B",
@@ -95,7 +103,8 @@
         "Evasion": "B",
         "Cost": 11
     },
-    { "Name": "Enterprise",
+    {
+        "Name": "Enterprise",
         "Class": "CV",
         "Nation": "Eagle Union",
         "HP": "B",
@@ -107,7 +116,8 @@
         "Evasion": "B",
         "Cost": 13
     },
-    { "Name": "Takao", 
+    {
+        "Name": "Takao",
         "Class": "CA",
         "Nation": "Sakura Empire",
         "HP": "A",
@@ -119,7 +129,8 @@
         "Evasion": "C",
         "Cost": 12
     },
-    { "Name": "San Diego", 
+    {
+        "Name": "San Diego",
         "Class": "CL",
         "Nation": "Eagle Union",
         "HP": "C",
