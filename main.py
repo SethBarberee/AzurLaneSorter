@@ -59,6 +59,11 @@ def new_ship_data(ships_dict):
     }
     # Add it to the list
     ships_dict.append(new_ship)
+    # write to a json datafile
+    # TODO find a way to let user change this
+    with open("data_export.json", "w+") as write_file:
+        # Dump the data in a nice fashion
+        json.dump(ships_dict, write_file, indent = 4, separators=(',',': '))
     return ships_dict
 
 def find_line(ships_dict):
