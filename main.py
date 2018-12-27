@@ -1,4 +1,24 @@
-import json
+import json, sys, os, copy
+ship_dict = []
+menu_actions = {}
+
+# Execute menu
+def exec_menu(choice):
+    os.system('clear')
+    ch = choice.lower()
+    if ch == '':
+        menu_actions['main']()
+    else:
+        try:
+            menu_actions[ch]()
+        except KeyError:
+            print("Invalid selection, please try again.")
+            menu_actions['main']()
+    return
+
+def exit():
+    sys.exit()
+
 def parse_data(filename='data.json'):
     """ Pass in a JSON file of ships and return a python dictionary """
 
@@ -6,6 +26,39 @@ def parse_data(filename='data.json'):
     # loop through line by line
     with open(filename, 'r') as f:
         ships_dict = json.load(f)
+    return ships_dict
+
+def new_ship_data(ships_dict):
+    """ Add a new ship dictionary and return the updated list"""
+    # Prompt each stat
+    name = input("Name: ")
+    clas = input("Class: ")
+    nation = input("Nation: ")
+    hp = input("HP: ")
+    firepower = input("Firepower: ")
+    aa = input("Anti-Air: ")
+    armor = input("Armor: ")
+    torpedo = input("Torpedo: ")
+    aviation = input("Aviation: ")
+    evasion = input("Evasion: ")
+    cost = input("Cost: ")
+    print("Adding " + name + " to the list")
+    # Create the dictionary for the new ship
+    new_ship = {
+            "Name": name,
+            "Class": clas,
+            "Nation": nation,
+            "HP": hp,
+            "Firepower": firepower,
+            "Anti-Air": aa,
+            "Armor": armor,
+            "Torpedo": torpedo,
+            "Aviation": aviation,
+            "Evasion": evasion,
+            "Cost": cost
+    }
+    # Add it to the list
+    ships_dict.append(new_ship)
     return ships_dict
 
 def find_line(ships_dict):
@@ -34,24 +87,65 @@ def sort_ships(ships_dict, stat='HP'):
         # Assign a ranking to each letter
         keyorder = ['S', 'A', 'B', 'C', 'D', 'E' ]
     order = {key: i for i, key in enumerate(keyorder)}
-    ship_dict = sorted(ships_dict, key = lambda d: order[d[stat]])
-    return ship_dict
+    # TODO maybe surround in a try/except block for errors or check for valid stat??
+    sorted_ship_dict = sorted(ships_dict, key = lambda d: order[d[stat]])
+    return sorted_ship_dict
 
-def main():
+def menu1():
+    """ Menu that will import the ship data """
+    # Declare we are using the global to add the JSON data to it
+    global ship_dict
     (ship_dict) = parse_data()
+    choice = input("Enter 0 to exit: ")
+    exec_menu(choice)
+    return 
+
+
+def menu2():
+    """ Menu that sorts our data however we like to our top 3 for front and back"""
     # TODO find a way to filter based on Nation if desired
-    # This is the stat we wish to sort by
+    # TODO What if we want certain ships in our lineup??
+    global ship_dict
     stat = input('Enter the stat you would like to sort by: ')
     print("Sorting by " + stat)
     ship_sorted = sort_ships(ship_dict, stat)
-    #print(ship_sorted)
     (backline, frontline) = find_line(ship_sorted)
     # Print the top 3 for each line
     print("Backline:")
     print(backline[0:3])
     print("Frontline:")
     print(frontline[0:3])
+    choice = input("Enter 0 to exit: ")
+    exec_menu(choice)
+    return 
 
+def menu3():
+    # Declare we are using the global so we can add the new ship to it
+    global ship_dict
+    new_ship_dict = new_ship_data(ship_dict)
+    ship_dict = new_ship_dict
+    choice = input("Enter 0 to exit: ")
+    exec_menu(choice)
+    return
+
+def main():
+    print("Welcome to Azur Lane Sorter")
+    print("Enter your selection:")
+    print("1. Import Ships")
+    print("2. Sort Ships")
+    print("3. Add new ship to database")
+    print("0. Quit")
+    choice = input(" >>  ")
+    exec_menu(choice)
+
+# Dictionary of each menu
+menu_actions = {
+    'main': main,
+    '1': menu1,
+    '2': menu2,
+    '3': menu3,
+    '0': exit,
+}
 
 if __name__ == "__main__":
     main()
