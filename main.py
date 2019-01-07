@@ -1,5 +1,5 @@
 import json, sys, os, copy
-ship_dict = []
+ship_dict = [] # global dictionary for all the ships
 menu_actions = {}
 
 # Execute menu
@@ -75,10 +75,10 @@ def find_line(ships_dict):
     for ship in ships_dict:
         if ship['Class'] in backline_set:
             # Matches one of the classes so add it
-            backline.append(ship['Name'])
+            backline.append(ship)
         else:
             # Doesn't match so it's in the front
-            frontline.append(ship['Name'])
+            frontline.append(ship)
     # Return which line they are in respectively
     return (backline, frontline)
 
@@ -101,7 +101,7 @@ def menu1():
     # Declare we are using the global to add the JSON data to it
     global ship_dict
     (ship_dict) = parse_data()
-    choice = input("Enter 0 to exit: ")
+    choice = input("Enter 0 to exit or main for main menu: ")
     exec_menu(choice)
     return 
 
@@ -113,14 +113,24 @@ def menu2():
     global ship_dict
     stat = input('Enter the stat you would like to sort by: ')
     print("Sorting by " + stat)
-    ship_sorted = sort_ships(ship_dict, stat)
-    (backline, frontline) = find_line(ship_sorted)
+    # Split dictionary into backline and frontline
+    (backline, frontline) = find_line(ship_dict)
+    # Sort both by respective stat
+    new_backline = sort_ships(backline, stat)
+    new_frontline = sort_ships(frontline, stat)
+    # Create a list of names for each line
+    frontline_names = []
+    backline_names = []
+    for ship in new_backline:
+        backline_names.append(ship['Name'])
+    for ship in new_frontline:
+        frontline_names.append(ship['Name'])
     # Print the top 3 for each line
     print("Backline:")
-    print(backline[0:3])
+    print(backline_names[0:3])
     print("Frontline:")
-    print(frontline[0:3])
-    choice = input("Enter 0 to exit: ")
+    print(frontline_names[0:3])
+    choice = input("Enter 0 to exit or main for main menu: ")
     exec_menu(choice)
     return 
 
@@ -129,7 +139,7 @@ def menu3():
     global ship_dict
     new_ship_dict = new_ship_data(ship_dict)
     ship_dict = new_ship_dict
-    choice = input("Enter 0 to exit: ")
+    choice = input("Enter 0 to exit or main for main menu: ")
     exec_menu(choice)
     return
 
