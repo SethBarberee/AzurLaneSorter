@@ -121,15 +121,23 @@ def menu2():
     # Create a list of names for each line
     frontline_names = []
     backline_names = []
-    for ship in new_backline:
-        backline_names.append(ship['Name'])
-    for ship in new_frontline:
-        frontline_names.append(ship['Name'])
-    # Print the top 3 for each line
+    oil_cost = 0
+    # Only do the top three
+    for i in range(3):
+        # Add the backline ship and cost
+        backline_names.append(new_backline[i]['Name'])
+        oil_cost += int(float(new_backline[i]['Cost']))
+        # Add the frontline ship and cost
+        frontline_names.append(new_frontline[i]['Name'])
+        oil_cost += int(float(new_frontline[i]['Cost']))
+
+    # Print each line
     print("Backline:")
-    print(backline_names[0:3])
+    print(backline_names)
     print("Frontline:")
-    print(frontline_names[0:3])
+    print(frontline_names)
+    print("Cost: ")
+    print(oil_cost)
     choice = input("Enter 0 to exit or main for main menu: ")
     exec_menu(choice)
     return 
