@@ -85,16 +85,20 @@ def find_line(ships_dict):
 # TODO: only sorts by one stat... make it do more
 def sort_ships(ships_dict, stat='HP'):
     """ Sort the ship dictionary given a certain stat """
-    if stat == 'Armor':
-        # Armor only has three values
-        keyorder = ['Heavy', 'Medium', 'Light' ]
+    # First, check if the stat is in the dictionary
+    if stat in ships_dict[0]:
+        if stat == 'Armor':
+            # Armor only has three values
+            keyorder = ['Heavy', 'Medium', 'Light' ]
+        else:
+            # Assign a ranking to each letter
+            keyorder = ['S', 'A', 'B', 'C', 'D', 'E' ]
+        order = {key: i for i, key in enumerate(keyorder)}
+        sorted_ship_dict = sorted(ships_dict, key = lambda d: order[d[stat]])
+        return sorted_ship_dict
     else:
-        # Assign a ranking to each letter
-        keyorder = ['S', 'A', 'B', 'C', 'D', 'E' ]
-    order = {key: i for i, key in enumerate(keyorder)}
-    # TODO maybe surround in a try/except block for errors or check for valid stat??
-    sorted_ship_dict = sorted(ships_dict, key = lambda d: order[d[stat]])
-    return sorted_ship_dict
+        print("Key doesn't exist so returing the dictionary that was passed in")
+        return ships_dict
 
 def menu1():
     """ Menu that will import the ship data """
@@ -152,6 +156,7 @@ def menu3():
     return
 
 def main():
+    os.system('clear')
     print("Welcome to Azur Lane Sorter")
     print("Enter your selection:")
     print("1. Import Ships")
