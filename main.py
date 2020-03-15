@@ -32,30 +32,45 @@ def new_ship_data(ships_dict):
     """ Add a new ship dictionary and return the updated list"""
     # Prompt each stat
     name = input("Name: ")
-    clas = input("Class: ")
+    # TODO check nation
     nation = input("Nation: ")
-    hp = input("HP: ")
-    firepower = input("Firepower: ")
-    aa = input("Anti-Air: ")
+    clas = input("Class: ")
+    luck = int(input("Luck: "))
     armor = input("Armor: ")
-    torpedo = input("Torpedo: ")
-    aviation = input("Aviation: ")
-    evasion = input("Evasion: ")
-    cost = input("Cost: ")
+    speed = int(input("Speed: "))
+    hp = int(input("HP: "))
+    firepower = int(input("Firepower: "))
+    aa = int(input("Anti-Air: "))
+    torpedo = int(input("Torpedo: "))
+    evasion = int(input("Evasion: "))
+    aviation = int(input("Aviation: "))
+    cost = int(input("Cost: "))
+    reloa = int(input("Reload: "))
+    anti_sub = int(input("Anti-Sub: "))
+    oxygen  = int(input("Oxygen: "))
+    ammo = int(input("Ammunition: "))
+    acc = int(input("Accuracy: "))
     print("Adding " + name + " to the list")
     # Create the dictionary for the new ship
     new_ship = {
             "Name": name,
-            "Class": clas,
             "Nation": nation,
+            "Class": clas,
+            "Luck": luck,
+            "Armor": armor,
+            "Speed": speed,
             "HP": hp,
             "Firepower": firepower,
             "Anti-Air": aa,
-            "Armor": armor,
             "Torpedo": torpedo,
-            "Aviation": aviation,
             "Evasion": evasion,
-            "Cost": cost
+            "Aviation": aviation,
+            "Cost": cost,
+            "Reload": reloa,
+            "Anti-Submarine": anti_sub,
+            "Oxygen": oxygen,
+            "Ammunition": ammo,
+            "Accuracy": acc
     }
     # Add it to the list
     ships_dict.append(new_ship)
@@ -90,11 +105,10 @@ def sort_ships(ships_dict, stat='HP'):
         if stat == 'Armor':
             # Armor only has three values
             keyorder = ['Heavy', 'Medium', 'Light' ]
+            order = {key: i for i, key in enumerate(keyorder)}
+            sorted_ship_dict = sorted(ships_dict, key = lambda d: order[d[stat]])
         else:
-            # Assign a ranking to each letter
-            keyorder = ['S', 'A', 'B', 'C', 'D', 'E' ]
-        order = {key: i for i, key in enumerate(keyorder)}
-        sorted_ship_dict = sorted(ships_dict, key = lambda d: order[d[stat]])
+            sorted_ship_dict = sorted(ships_dict, key = lambda d: d[stat], reverse=True)
         return sorted_ship_dict
     else:
         print("Key doesn't exist so returing the dictionary that was passed in")
@@ -127,6 +141,7 @@ def menu2():
     backline_names = []
     oil_cost = 0
     # Only do the top three
+    # TODO check if we have less than 3
     for i in range(3):
         # Add the backline ship and cost
         backline_names.append(new_backline[i]['Name'])
