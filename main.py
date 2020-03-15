@@ -101,18 +101,22 @@ def find_line(ships_dict):
 def sort_ships(ships_dict, stat='HP'):
     """ Sort the ship dictionary given a certain stat """
     # First, check if the stat is in the dictionary
-    if stat in ships_dict[0]:
-        if stat == 'Armor':
-            # Armor only has three values
-            keyorder = ['Heavy', 'Medium', 'Light' ]
-            order = {key: i for i, key in enumerate(keyorder)}
-            sorted_ship_dict = sorted(ships_dict, key = lambda d: order[d[stat]])
+    try:
+        if stat in ships_dict[0]:
+            if stat == 'Armor':
+                # Armor only has three values
+                keyorder = ['Heavy', 'Medium', 'Light' ]
+                order = {key: i for i, key in enumerate(keyorder)}
+                sorted_ship_dict = sorted(ships_dict, key = lambda d: order[d[stat]])
+            else:
+                sorted_ship_dict = sorted(ships_dict, key = lambda d: d[stat], reverse=True)
+            return sorted_ship_dict
         else:
-            sorted_ship_dict = sorted(ships_dict, key = lambda d: d[stat], reverse=True)
-        return sorted_ship_dict
-    else:
-        print("Key doesn't exist so returing the dictionary that was passed in")
-        return ships_dict
+            print("Key doesn't exist")
+            return
+    except:
+        return
+
 
 def menu1():
     """ Menu that will import the ship data """
@@ -136,6 +140,10 @@ def menu2():
     # Sort both by respective stat
     new_backline = sort_ships(backline, stat)
     new_frontline = sort_ships(frontline, stat)
+    if new_backline == None or new_frontline == None:
+        print("Load ships please")
+        # TODO maybe a delay
+        menu_actions['main']()
     # Create a list of names for each line
     frontline_names = []
     backline_names = []
