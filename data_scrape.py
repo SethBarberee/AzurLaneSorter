@@ -4,13 +4,22 @@ from bs4 import BeautifulSoup
 
 ships_dict = []
 
-def main():
-    page = requests.get("https://azurlane.koumakan.jp/List_of_Ships_by_Stats#Level_120")
+def scrape():
+
+    # There are three tabs that we can select Level 1, 100, and 120
+    #desired_level = 1
+    #desired_level = 100
+    desired_level = 120
+
+    page = requests.get("https://azurlane.koumakan.jp/List_of_Ships_by_Stats")
     soup = BeautifulSoup(page.content, 'html.parser')
 
-    # TODO How do I select each table to go through...
-    for i in range(0, len(soup.find_all('div', title = "Level 120"))): # Title
-        table = soup.find_all('div', title = "Level 120")[i] # Title
+    title_string = "Level " + str(desired_level)
+
+    # Select the Level 120 tab of each table
+    for i in range(0, len(soup.find_all('div', title = title_string))): # Title
+        # Select the Level 120 tab of each table
+        table = soup.find_all('div', title = title_string)[i] # Title
 
         # Iterate in groups of 20 (since that's one row)
         for x in range(0, len(table.find_all('td')), 20):
@@ -35,7 +44,7 @@ def main():
             ammo = table.find_all('td')[x + 18].get_text() # Title
             acc = table.find_all('td')[x + 19].get_text() # Title
 
-            # TODO export to JSON
+            # Export to JSON
             new_ship = {
                     "ID": ID,
                     "Name": name,
@@ -67,8 +76,7 @@ def main():
         json.dump(ships_dict, write_file, indent = 4, separators=(',',': '))
     return ships_dict
 
-            
 
 if __name__ == "__main__":
-    main()
+    scrape()
 
