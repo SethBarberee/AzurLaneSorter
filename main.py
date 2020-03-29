@@ -3,9 +3,13 @@ import json, sys, os, copy # global
 import utils, data_scrape #local
 
 ship_dict = [] # global dictionary for all the ships
-menu_actions = {}
+menu_actions = {} # blank definition here but we fill it at the bottom of the file
+
+# Useful lists for filtering and data validation
 valid_nations = ['Eagle Union', 'Royal Navy', 'Ironblood', 'Sakura Empire', 'Dragon Empery', 'Sardegna Empire', 'Northern Parliament', 'Iris Libre', 'Vichya Dominion']
 valid_rarity =  ['Common', 'Rare', 'Elite', 'Super Rare', 'Ultra']
+valid_class =  ['BB', 'BC', 'BM', 'CV', 'CVL', 'CL', 'CA', 'SS', 'AR'] 
+
 # Execute menu
 def exec_menu(choice):
     os.system('clear')
@@ -128,6 +132,19 @@ def filter_ships(ships_dict, filter_name='Nation'):
         except:
             print("Error: No Filter Applied")
             return ships_dict
+    elif filter_name == "Class":
+        # check if it's valid class
+        try:
+            _class = input('Enter the desired class: ')
+            valid_class.index(_class)
+            print("Filtering by " + _class)
+            for ship in ships_dict:
+                if(ship["Class"] == _class):
+                    new_ship_dict.append(ship)
+            return new_ship_dict
+        except:
+            print("Error: No Filter Applied")
+            return ships_dict
     else:
         return ships_dict
 
@@ -153,7 +170,8 @@ def menu2():
     # TODO make it optional to filter instead of the force-filtering
     # Sort both by respective stat
     new_backline = utils.sort_ships(backline, stat)
-    print("filter the backline")
+    print("filter the backline by class/nation")
+    new_backline = filter_ships(new_backline, 'Class')
     new_backline = filter_ships(new_backline)
 
     new_frontline = utils.sort_ships(frontline, stat)
@@ -205,6 +223,7 @@ def main():
     exec_menu(choice)
 
 # Dictionary of each menu
+# Each choice is a function that is called
 menu_actions = {
     'main': main,
     '1': menu1,
