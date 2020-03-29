@@ -141,9 +141,4 @@ def scrape(desired_level=100, select_all=False):
     with open("data_export.json", "w+") as write_file:
         # Dump the data in a nice fashion
         json.dump(ships_dict, write_file, indent = 4, separators=(',',': '))
-    return ships_dict
-
-
-if __name__ == "__main__":
-    scrape()
-
+    return
