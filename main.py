@@ -1,6 +1,6 @@
 import json, sys, os, copy # global
 
-import utils #local
+import utils, data_scrape #local
 
 ship_dict = [] # global dictionary for all the ships
 menu_actions = {}
@@ -37,9 +37,18 @@ def new_ship_data(ships_dict):
     # Prompt each stat
     _id = input("ID: ")
     name = input("Name: ")
-    # TODO check nation
-    rarity = input("Rarity: ")
-    nation = input("Nation: ")
+    try:
+        # Check Rarity input
+        rarity = input("Rarity: ")
+        valid_rarity.index(rarity)
+    except:
+        rarity = "Common" # We'll set Common as default
+    try:
+        # Check Nation input
+        nation = input("Nation: ")
+        valid_nations.index(nation)
+    except:
+        nation = "Other"
     clas = input("Class: ")
     luck = int(input("Luck: "))
     armor = input("Armor: ")
@@ -93,24 +102,34 @@ def filter_ships(ships_dict, filter_name='Nation'):
     """ Filter the ship dictionary based on Nation or Rarity """
     new_ship_dict = []
     if filter_name == "Nation":
-        # TODO check if it is a valid nation
-        nation = input('Enter the desired nation: ')
-        print("Filtering by " + nation)
-        for ship in ships_dict:
-            if(ship["Nation"] == nation):
-                new_ship_dict.append(ship)
-        return new_ship_dict
+        # check if it is a valid nation
+        try:
+            nation = input('Enter the desired nation: ')
+            valid_nations.index(nation)
+            print("Filtering by " + nation)
+            for ship in ships_dict:
+                if(ship["Nation"] == nation):
+                    new_ship_dict.append(ship)
+            return new_ship_dict
+        except:
+            print("Error: No Filter Applied")
+            return ships_dict
             
     elif filter_name == "Rarity":
-        # TODO check if it's valid rarity
-        rarity = input('Enter the desired rarity: ')
-        print("Filtering by " + rarity)
-        for ship in ships_dict:
-            if(ship["Rarity"] == rarity):
-                new_ship_dict.append(ship)
-        return new_ship_dict
+        # check if it's valid rarity
+        try:
+            rarity = input('Enter the desired rarity: ')
+            valid_rarity.index(rarity)
+            print("Filtering by " + rarity)
+            for ship in ships_dict:
+                if(ship["Rarity"] == rarity):
+                    new_ship_dict.append(ship)
+            return new_ship_dict
+        except:
+            print("Error: No Filter Applied")
+            return ships_dict
     else:
-        return
+        return ships_dict
 
 def menu1():
     """ Menu that will import the ship data """
@@ -165,6 +184,14 @@ def menu3():
     exec_menu(choice)
     return
 
+def menu4():
+    # This will scrape the AL Wiki and update the data_export file
+    data_scrape.scrape()
+    print("Updated data_export.json")
+    choice = input("Enter 0 to exit or main for main menu: ")
+    exec_menu(choice)
+    return
+
 def main():
     os.system('clear')
     print("Welcome to Azur Lane Sorter")
@@ -172,6 +199,7 @@ def main():
     print("1. Import Ships")
     print("2. Sort Ships")
     print("3. Add new ship to database")
+    print("4. Update stats from AL wiki")
     print("0. Quit")
     choice = input(" >>  ")
     exec_menu(choice)
@@ -182,6 +210,7 @@ menu_actions = {
     '1': menu1,
     '2': menu2,
     '3': menu3,
+    '4': menu4,
     '0': exit,
 }
 
