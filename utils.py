@@ -30,7 +30,6 @@ def find_line(ships_dict):
     # Return which line they are in respectively
     return (backline, frontline, subline)
 
-# TODO: only sorts by one stat... make it do more
 def sort_ships(ships_dict, stat='HP'):
     """ Sort the ship dictionary given a certain stat """
     # First, check if the stat is in the dictionary
