@@ -135,6 +135,7 @@ def menu2():
     global ship_dict
     stat = input('Enter the stat you would like to sort by: ')
     print("Sorting by " + stat)
+
     # Split dictionary into backline and frontline
     (backline, frontline) = find_line(ship_dict)
     # Sort both by respective stat
@@ -144,19 +145,38 @@ def menu2():
         print("Load ships please")
         # TODO maybe a delay
         menu_actions['main']()
+
     # Create a list of names for each line
     frontline_names = []
     backline_names = []
     oil_cost = 0
-    # Only do the top three
-    # TODO check if we have less than 3
-    for i in range(3):
-        # Add the backline ship and cost
-        backline_names.append(new_backline[i]['Name'])
-        oil_cost += int(float(new_backline[i]['Cost']))
-        # Add the frontline ship and cost
-        frontline_names.append(new_frontline[i]['Name'])
-        oil_cost += int(float(new_frontline[i]['Cost']))
+    # See how many ships we have in each lineup
+    max_range_back = len(new_backline)
+    max_range_front = len(new_frontline)
+    # Backline
+    if(max_range_back >= 3):
+        # Only do the top three
+        for i in range(3):
+            # Add the backline ship and cost
+            backline_names.append(new_backline[i]['Name'])
+            oil_cost += int(float(new_backline[i]['Cost']))
+    else:
+        for i in range(max_range_back):
+            # Add the backline ship and cost
+            backline_names.append(new_backline[i]['Name'])
+            oil_cost += int(float(new_backline[i]['Cost']))
+    # Frontline 
+    if(max_range_front >= 3):
+        # Only do the top three
+        for i in range(3):
+            # Add the frontline ship and cost
+            frontline_names.append(new_frontline[i]['Name'])
+            oil_cost += int(float(new_frontline[i]['Cost']))
+    else:
+        for i in range(max_range_back):
+            # Add the frontline ship and cost
+            frontline_names.append(new_frontline[i]['Name'])
+            oil_cost += int(float(new_frontline[i]['Cost']))
 
     # Print each line
     print("Backline:")
