@@ -9,6 +9,12 @@
 # create_line
 # Filter best three for each line and calculate oil cost
 
+# Useful lists for filtering and data validation
+valid_nations = ['Eagle Union', 'Royal Navy', 'Ironblood', 'Sakura Empire', 'Dragon Empery', 'Sardegna Empire', 'Northern Parliament', 'Iris Libre', 'Vichya Dominion']
+valid_rarity =  ['Common', 'Rare', 'Elite', 'Super Rare', 'Ultra']
+valid_class =  ['BB', 'BC', 'BM', 'CV', 'CVL', 'CL', 'CA', 'SS', 'AR'] 
+
+
 def find_line(ships_dict):
     """ Given the dictionary, parse frontline and backline """
     backline = []
@@ -33,6 +39,10 @@ def find_line(ships_dict):
 def sort_ships(ships_dict, stat='HP'):
     """ Sort the ship dictionary given a certain stat """
     # First, check if the stat is in the dictionary
+    if stat == "":
+        print("Setting to HP")
+        stat = "HP"
+        
     try:
         if stat in ships_dict[0]:
             if stat == 'Armor':
@@ -111,4 +121,50 @@ def create_line(backline, frontline, subline):
     print("Sub Cost: ")
     print(suboil_cost)
     return    
+
+def filter_ships(ships_dict, filter_name='Nation'):
+    """ Filter the ship dictionary based on Nation or Rarity """
+    new_ship_dict = []
+    if filter_name == 'Nation':
+        # check if it is a valid nation
+        try:
+            nation = input('Enter the desired nation: ')
+            valid_nations.index(nation)
+            print("Filtering by " + nation)
+            for ship in ships_dict:
+                if(ship["Nation"] == nation):
+                    new_ship_dict.append(ship)
+            return new_ship_dict
+        except:
+            print("Error: No Filter Applied")
+            return ships_dict
+            
+    elif filter_name == 'Rarity':
+        # check if it's valid rarity
+        try:
+            rarity = input('Enter the desired rarity: ')
+            valid_rarity.index(rarity)
+            print("Filtering by " + rarity)
+            for ship in ships_dict:
+                if(ship["Rarity"] == rarity):
+                    new_ship_dict.append(ship)
+            return new_ship_dict
+        except:
+            print("Error: No Filter Applied")
+            return ships_dict
+    elif filter_name == 'Class':
+        # check if it's valid class
+        try:
+            _class = input('Enter the desired class: ')
+            valid_class.index(_class)
+            print("Filtering by " + _class)
+            for ship in ships_dict:
+                if(ship["Class"] == _class):
+                    new_ship_dict.append(ship)
+            return new_ship_dict
+        except:
+            print("Error: No Filter Applied")
+            return ships_dict
+    else:
+        return ships_dict
 

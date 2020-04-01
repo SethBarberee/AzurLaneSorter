@@ -102,51 +102,21 @@ def new_ship_data(ships_dict):
         json.dump(ships_dict, write_file, indent = 4, separators=(',',': '))
     return ships_dict
 
-def filter_ships(ships_dict, filter_name='Nation'):
-    """ Filter the ship dictionary based on Nation or Rarity """
-    new_ship_dict = []
-    if filter_name == "Nation":
-        # check if it is a valid nation
-        try:
-            nation = input('Enter the desired nation: ')
-            valid_nations.index(nation)
-            print("Filtering by " + nation)
-            for ship in ships_dict:
-                if(ship["Nation"] == nation):
-                    new_ship_dict.append(ship)
-            return new_ship_dict
-        except:
-            print("Error: No Filter Applied")
-            return ships_dict
-            
-    elif filter_name == "Rarity":
-        # check if it's valid rarity
-        try:
-            rarity = input('Enter the desired rarity: ')
-            valid_rarity.index(rarity)
-            print("Filtering by " + rarity)
-            for ship in ships_dict:
-                if(ship["Rarity"] == rarity):
-                    new_ship_dict.append(ship)
-            return new_ship_dict
-        except:
-            print("Error: No Filter Applied")
-            return ships_dict
-    elif filter_name == "Class":
-        # check if it's valid class
-        try:
-            _class = input('Enter the desired class: ')
-            valid_class.index(_class)
-            print("Filtering by " + _class)
-            for ship in ships_dict:
-                if(ship["Class"] == _class):
-                    new_ship_dict.append(ship)
-            return new_ship_dict
-        except:
-            print("Error: No Filter Applied")
-            return ships_dict
-    else:
-        return ships_dict
+def filter_menu(ship_dict_old):
+    """ Menu for filtering ships given a dictionary """
+    test = "Y"
+    while (test == 'Y'):
+        filter_choice = input('Filter by (Nation, Rarity, Class, N/A): ')
+        if(filter_choice == 'N/A' or filter_choice == ""):
+            # Set the new equal to the old
+            ship_dict_new = ship_dict_old
+            return ship_dict_new
+        else:
+            print("Filtering by " + filter_choice)
+            ship_dict_new = utils.filter_ships(ship_dict_old, filter_choice)
+            ship_dict_old = ship_dict_new
+            test = input('Would you like to filter again? (Y/N): ')
+    return ship_dict_new
 
 def menu1():
     """ Menu that will import the ship data """
@@ -157,33 +127,30 @@ def menu1():
     exec_menu(choice)
     return 
 
-
 def menu2():
     """ Menu that sorts our data however we like to our top 3 for front and back"""
     # TODO What if we want certain ships in our lineup??
     global ship_dict
-    stat = input('Enter the stat you would like to sort by: ')
-    print("Sorting by " + stat)
-
     # Split dictionary into backline and frontline
     (backline, frontline, subline) = utils.find_line(ship_dict)
-    # TODO make it optional to filter instead of the force-filtering
-    # Sort both by respective stat
+    # Sort by respective stat
+    stat = input('Enter the stat you would like to sort the backline by: ')
+    print("Sorting by " + stat)
     new_backline = utils.sort_ships(backline, stat)
-    print("filter the backline by class/nation")
-    new_backline = filter_ships(new_backline, 'Class')
-    new_backline = filter_ships(new_backline)
+    new_backline = filter_menu(new_backline)
 
+    stat = input('Enter the stat you would like to sort the frontline by: ')
+    print("Sorting by " + stat)
     new_frontline = utils.sort_ships(frontline, stat)
-    print("filter the frontline")
-    new_frontline = filter_ships(new_frontline)
+    new_frontline = filter_menu(new_frontline)
 
+    stat = input('Enter the stat you would like to sort the subline by: ')
+    print("Sorting by " + stat)
     new_subline = utils.sort_ships(subline, stat)
-    print("Filter the subs")
-    new_subline = filter_ships(new_subline)
+    new_subline = filter_menu(new_subline)
  
     if new_backline == None or new_frontline == None:
-        print("Load ships please")
+        print("Empty line")
         # TODO maybe a delay
         menu_actions['main']()
     
