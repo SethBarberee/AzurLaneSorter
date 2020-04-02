@@ -54,6 +54,8 @@ def scrape(desired_level=100, select_all=False):
                     oxygen = table.find_all('td')[x + 17].get_text() # Title
                     ammo = table.find_all('td')[x + 18].get_text() # Title
                     acc = table.find_all('td')[x + 19].get_text() # Title
+                    name = name.replace(" (Retrofit)", "Kai")
+                    image = "https://azurlane.koumakan.jp/File:" + name.replace(" ", "_") + "Icon.png"
 
                     # Export to JSON
                     new_ship = {
@@ -76,7 +78,8 @@ def scrape(desired_level=100, select_all=False):
                             "Anti-Submarine": anti_sub,
                             "Oxygen": oxygen,
                             "Ammunition": ammo,
-                            "Accuracy": acc
+                            "Accuracy": acc,
+                            "Image": image
                             }
                     # Add to the dictionary
                     ships_dict.append(new_ship)
@@ -111,6 +114,8 @@ def scrape(desired_level=100, select_all=False):
                 oxygen = table.find_all('td')[x + 17].get_text() # Title
                 ammo = table.find_all('td')[x + 18].get_text() # Title
                 acc = table.find_all('td')[x + 19].get_text() # Title
+                name = name.replace(" (Retrofit)", "Kai")
+                image = "https://azurlane.koumakan.jp/File:" + name.replace(" ", "_") + "Icon.png"
 
                 # Export to JSON
                 new_ship = {
@@ -133,7 +138,8 @@ def scrape(desired_level=100, select_all=False):
                         "Anti-Submarine": anti_sub,
                         "Oxygen": oxygen,
                         "Ammunition": ammo,
-                        "Accuracy": acc
+                        "Accuracy": acc,
+                        "Image": image
                         }
                 # Add to the dictionary
                 ships_dict.append(new_ship)
