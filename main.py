@@ -156,8 +156,25 @@ def menu2():
         print("Empty line")
         # TODO maybe a delay
         menu_actions['main']()
-    
-    utils.create_line(new_backline, new_frontline, new_subline)
+
+    # Allow user to add ships if they want to
+    preset_names = []
+    test = "Y"
+    while (test == 'Y'):
+        name_choice = input('Name of Ship to add by default to line: ')
+        if(name_choice == 'N/A' or name_choice == ""):
+            break
+        else:
+            for ship in ship_dict:
+                # check for the name
+                if ship["Name"] == name_choice:
+                    preset_names.append(ship) 
+                    break
+            # TODO search ship_dict and add
+            test = input('Would you like to add another? (Y/N): ')
+
+    # Pass it all in and create the lineup
+    utils.create_line(new_backline, new_frontline, new_subline, preset_names)
 
     choice = input("Enter 0 to exit or main for main menu: ")
     exec_menu(choice)

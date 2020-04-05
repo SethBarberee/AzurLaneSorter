@@ -59,17 +59,38 @@ def sort_ships(ships_dict, stat='HP'):
     except:
         return
 
-def create_line(backline, frontline, subline):
+def create_line(backline, frontline, subline, preset_names):
     # Create a list of names for each line
     frontline_names = []
     backline_names = []
     subline_names = []
     oil_cost = 0
     suboil_cost = 0 # subs are separate oil
-    # See how many ships we have in each lineup
-    max_range_back = len(backline)
-    max_range_front = len(frontline)
-    max_range_sub = len(subline)
+
+    preset_subline = []
+    preset_frontline = []
+    preset_backline = []
+    if len(preset_names) > 0:
+        # we've got some to add by default so figure out the lines first
+        (preset_backline, preset_frontline, preset_subline) = find_line(preset_names)
+        for i in range(len(preset_backline)):
+            # Add the backline ship and cost
+            backline_names.append(preset_backline[i]['Name'])
+            oil_cost += int(float(preset_backline[i]['Cost']))
+        for i in range(len(preset_frontline)):
+            # Add the backline ship and cost
+            frontline_names.append(preset_frontline[i]['Name'])
+            oil_cost += int(float(preset_frontline[i]['Cost']))
+        for i in range(len(preset_subline)):
+            # Add the backline ship and cost
+            subline_names.append(preset_subline[i]['Name'])
+            suboil_cost += int(float(preset_subline[i]['Cost']))
+
+    # See how many ships we have in each lineup accounting for presets
+    max_range_back = min(len(backline), 3 - len(preset_backline))
+    max_range_front = min(len(frontline), 3 - len(preset_frontline))
+    max_range_sub = min(len(subline), 3 - len(preset_subline))
+
     # Backline
     if(max_range_back >= 3):
         # Only do the top three
@@ -95,7 +116,7 @@ def create_line(backline, frontline, subline):
             # Add the frontline ship and cost
             frontline_names.append(frontline[i]['Name'])
             oil_cost += int(float(frontline[i]['Cost']))
-
+    # Subline
     if(max_range_sub >= 3):
         # Only do the top three
         for i in range(3):
