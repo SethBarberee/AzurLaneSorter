@@ -69,6 +69,8 @@ def new_ship_data(ships_dict):
     oxygen  = int(input("Oxygen: "))
     ammo = int(input("Ammunition: "))
     acc = int(input("Accuracy: "))
+    name_image = name.replace(" (Retrofit)", "Kai")
+    image = "https://azurlane.koumakan.jp/File:" + name_image.replace(" ", "_") + "Icon.png"
     print("Adding " + name + " to the list")
     # Create the dictionary for the new ship
     new_ship = {
@@ -91,7 +93,8 @@ def new_ship_data(ships_dict):
             "Anti-Submarine": anti_sub,
             "Oxygen": oxygen,
             "Ammunition": ammo,
-            "Accuracy": acc
+            "Accuracy": acc,
+            "Image": image
     }
     # Add it to the list
     ships_dict.append(new_ship)
@@ -112,8 +115,8 @@ def filter_menu(ship_dict_old):
             ship_dict_new = ship_dict_old
             return ship_dict_new
         else:
-            print("Filtering by " + filter_choice)
             ship_dict_new = utils.filter_ships(ship_dict_old, filter_choice)
+            # copy new to old so we can filter again if we want
             ship_dict_old = ship_dict_new
             test = input('Would you like to filter again? (Y/N): ')
     return ship_dict_new
