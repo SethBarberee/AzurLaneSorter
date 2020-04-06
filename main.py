@@ -27,15 +27,6 @@ def exec_menu(choice):
 def exit():
     sys.exit()
 
-def parse_data(filename='data.json'):
-    """ Pass in a JSON file of ships and return a python dictionary """
-
-    # Open the data file for reading
-    # loop through line by line
-    with open(filename, 'r') as f:
-        ships_dict = json.load(f)
-    return ships_dict
-
 def new_ship_data(ships_dict):
     """ Add a new ship dictionary and return the updated list"""
     # Prompt each stat
@@ -125,7 +116,7 @@ def menu1():
     """ Menu that will import the ship data """
     # Declare we are using the global to add the JSON data to it
     global ship_dict
-    (ship_dict) = parse_data()
+    (ship_dict) = utils.parse_data()
     choice = input("Enter 0 to exit or main for main menu: ")
     exec_menu(choice)
     return 

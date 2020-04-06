@@ -1,3 +1,5 @@
+import json # global
+
 # Mainly a utility file with the following
 
 # find_Line
@@ -14,6 +16,15 @@ valid_nations = ['Eagle Union', 'Royal Navy', 'Ironblood', 'Sakura Empire', 'Dra
 valid_rarity =  ['Common', 'Rare', 'Elite', 'Super Rare', 'Ultra']
 valid_class =  ['BB', 'BC', 'BM', 'CV', 'CVL', 'CL', 'CA', 'DD', 'SS', 'AR'] 
 
+
+def parse_data(filename='data.json'):
+    """ Pass in a JSON file of ships and return a python dictionary """
+
+    # Open the data file for reading
+    # loop through line by line
+    with open(filename, 'r') as f:
+        ships_dict = json.load(f)
+    return ships_dict
 
 def find_line(ships_dict):
     """ Given the dictionary, parse frontline and backline """
