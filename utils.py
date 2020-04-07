@@ -70,7 +70,7 @@ def sort_ships(ships_dict, stat='HP'):
     except:
         return
 
-def create_line(backline, frontline, subline, preset_names):
+def create_line(backline, frontline, subline, preset_names, UI=False):
     # Create a list of names for each line
     frontline_names = []
     backline_names = []
@@ -140,19 +140,22 @@ def create_line(backline, frontline, subline, preset_names):
             frontline_names.append(subline[i]['Name'])
             suboil_cost += int(float(subline[i]['Cost']))
 
-
-    # Print each line
-    print("Backline:")
-    print(backline_names)
-    print("Frontline:")
-    print(frontline_names)
-    print("Cost: ")
-    print(oil_cost)
-    print("Subs:")
-    print(subline_names)
-    print("Sub Cost: ")
-    print(suboil_cost)
-    return    
+    if UI == False:
+        # Print each line
+        print("Backline:")
+        print(backline_names)
+        print("Frontline:")
+        print(frontline_names)
+        print("Cost: ")
+        print(oil_cost)
+        print("Subs:")
+        print(subline_names)
+        print("Sub Cost: ")
+        print(suboil_cost)
+        return    
+    else:
+        # Return all the data
+        return(backline_names, frontline_names, oil_cost, subline_names, suboil_cost)
 
 def filter_ships(ships_dict, filter_name="Nation"):
     """ Filter the ship dictionary based on Nation or Rarity """
