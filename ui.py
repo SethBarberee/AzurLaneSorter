@@ -12,8 +12,8 @@ def scrape_wiki():
 def load_ships(list_widget):
     global ship_dict
     ship_dict = utils.parse_data()
-    # Add all ships to the list
     list_widget.clear()
+    # Add all ships to the list
     for item in ship_dict:
         list_widget.addItem(item['Name'])
     alert = QMessageBox()
@@ -22,12 +22,18 @@ def load_ships(list_widget):
 
 def sort_ships(front_list, back_list, sub_list):
     global ship_dict
+    # Clear the lists
     front_list.clear()
     back_list.clear()
     sub_list.clear()
+    # TODO make someway to override this
     ship_dict = utils.sort_ships(ship_dict, 'HP')
+    # Filter the lines
     (backline, frontline, subline) = utils.find_line(ship_dict)
+    # Create the top 3 and calculate oil
+    # TODO make way to get preset names
     (back, front, oil, sub, suboil) = utils.create_line(backline, frontline, subline, [], True)
+    # Add names to the list
     back_list.addItems(back)
     front_list.addItems(front)
     sub_list.addItems(sub)
@@ -36,16 +42,18 @@ def main():
     app = QApplication([])
     window = QWidget()
     layout = QVBoxLayout() # Vertical box layout
-    total = QHBoxLayout() # Vertical box layout
-    front = QHBoxLayout() # Vertical box layout
-    back = QHBoxLayout() # Vertical box layout
-    sub = QHBoxLayout() # Vertical box layout
+    total = QHBoxLayout() # Horizontal box layout
+    front = QHBoxLayout() # Horizontal box layout
+    back = QHBoxLayout() # Horizontal box layout
+    sub = QHBoxLayout() # Horizontal box layout
 
+    # Set button labels
     button1 = QPushButton('Import Ships')
     button2 = QPushButton('Sort Ships')
     button3 = QPushButton('Add new ships to database')
     button4 = QPushButton('Update stats from AL wiki')
 
+    # Set labels for list widgets
     label_total = QLabel('All Ships')
     label_back = QLabel('Backline')
     label_front = QLabel('Frontline')
@@ -55,15 +63,19 @@ def main():
     front_list_widget = QListWidget()
     back_list_widget = QListWidget()
     sub_list_widget = QListWidget()
+
+    # Connect buttons to functions
     button1.clicked.connect(lambda:load_ships(total_list_widget))
     button2.clicked.connect(lambda:sort_ships(front_list_widget, back_list_widget, sub_list_widget))
     button4.clicked.connect(scrape_wiki)
 
+    # Add menu buttons
     layout.addWidget(button1)
     layout.addWidget(button2)
     layout.addWidget(button3)
     layout.addWidget(button4)
 
+    # Add list widgets and labels to respective layouts
     total.addWidget(label_total)
     total.addWidget(total_list_widget)
     back.addWidget(label_back)
@@ -73,6 +85,7 @@ def main():
     sub.addWidget(label_sub)
     sub.addWidget(sub_list_widget)
 
+    # Nest the layouts in the main layout
     layout.addLayout(total)
     layout.addLayout(back)
     layout.addLayout(front)
