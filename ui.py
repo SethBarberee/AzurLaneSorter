@@ -38,6 +38,11 @@ def sort_ships(front_list, back_list, sub_list):
     front_list.addItems(front)
     sub_list.addItems(sub)
 
+def clear_boxes(front_list, back_list, sub_list):
+    front_list.clear()
+    back_list.clear()
+    sub_list.clear()
+
 def main():
     app = QApplication([])
     window = QWidget()
@@ -52,6 +57,7 @@ def main():
     button2 = QPushButton('Sort Ships')
     button3 = QPushButton('Add new ships to database')
     button4 = QPushButton('Update stats from AL wiki')
+    button5 = QPushButton('Clear Lines')
 
     # Set labels for list widgets
     label_total = QLabel('All Ships')
@@ -68,12 +74,14 @@ def main():
     button1.clicked.connect(lambda:load_ships(total_list_widget))
     button2.clicked.connect(lambda:sort_ships(front_list_widget, back_list_widget, sub_list_widget))
     button4.clicked.connect(scrape_wiki)
+    button5.clicked.connect(lambda:clear_boxes(front_list_widget, back_list_widget, sub_list_widget))
 
     # Add menu buttons
     layout.addWidget(button1)
     layout.addWidget(button2)
     layout.addWidget(button3)
     layout.addWidget(button4)
+    layout.addWidget(button5)
 
     # Add list widgets and labels to respective layouts
     total.addWidget(label_total)
