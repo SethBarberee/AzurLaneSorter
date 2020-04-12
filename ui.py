@@ -3,8 +3,12 @@ import data_scrape, utils
 
 ship_dict = [] # global dictionary for all the ships
 
-def scrape_wiki():
-    data_scrape.scrape()
+def scrape_wiki(checkbox):
+    # check whether we need to import only the list or all of them
+    if checkbox.isChecked() == True:
+        data_scrape.scrape(100, True) # Set to True when we went them all
+    else:
+        data_scrape.scrape(100, False) # Set to True when we went them all
     alert = QMessageBox()
     alert.setText('Stats have been updated in data_export.json')
     alert.exec_()
@@ -52,6 +56,9 @@ def main():
     back = QHBoxLayout() # Horizontal box layout
     sub = QHBoxLayout() # Horizontal box layout
 
+    checkbox1 = QCheckBox("Toggle Import All")
+    checkbox1.setChecked(False)
+
     # Set button labels
     button1 = QPushButton('Import Ships')
     button2 = QPushButton('Sort Ships')
@@ -73,7 +80,7 @@ def main():
     # Connect buttons to functions
     button1.clicked.connect(lambda:load_ships(total_list_widget))
     button2.clicked.connect(lambda:sort_ships(front_list_widget, back_list_widget, sub_list_widget))
-    button4.clicked.connect(scrape_wiki)
+    button4.clicked.connect(lambda:scrape_wiki(checkbox1))
     button5.clicked.connect(lambda:clear_boxes(front_list_widget, back_list_widget, sub_list_widget))
 
     # Add menu buttons
@@ -82,6 +89,7 @@ def main():
     layout.addWidget(button3)
     layout.addWidget(button4)
     layout.addWidget(button5)
+    layout.addWidget(checkbox1)
 
     # Add list widgets and labels to respective layouts
     total.addWidget(label_total)

@@ -20,7 +20,7 @@ def scrape(desired_level=100, select_all=False):
     soup = BeautifulSoup(page.content, 'html.parser')
 
     title_string = "Level " + str(desired_level)
-    if(~select_all): # if we want to use our local list
+    if(select_all == False): # if we want to use our local list
         include_list = source_ships()
 
         # Select the Level 120 tab of each table

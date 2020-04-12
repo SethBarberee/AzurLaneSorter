@@ -14,7 +14,7 @@ import json # global
 # Useful lists for filtering and data validation
 valid_nations = ['Eagle Union', 'Royal Navy', 'Ironblood', 'Sakura Empire', 'Dragon Empery', 'Sardegna Empire', 'Northern Parliament', 'Iris Libre', 'Vichya Dominion']
 valid_rarity =  ['Common', 'Rare', 'Elite', 'Super Rare', 'Ultra']
-valid_class =  ['BB', 'BC', 'BM', 'CV', 'CVL', 'CL', 'CA', 'DD', 'SS', 'AR'] 
+valid_class =  ['BB', 'BC', 'BM', 'CV', 'CVL', 'CL', 'CA', 'CB', 'DD', 'SS', 'AR'] 
 
 
 def parse_data(filename='data.json'):

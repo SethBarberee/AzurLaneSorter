@@ -8,7 +8,7 @@ menu_actions = {} # blank definition here but we fill it at the bottom of the fi
 # Useful lists for filtering and data validation
 valid_nations = ['Eagle Union', 'Royal Navy', 'Ironblood', 'Sakura Empire', 'Dragon Empery', 'Sardegna Empire', 'Northern Parliament', 'Iris Libre', 'Vichya Dominion']
 valid_rarity =  ['Common', 'Rare', 'Elite', 'Super Rare', 'Ultra']
-valid_class =  ['BB', 'BC', 'BM', 'CV', 'CVL', 'CL', 'CA', 'SS', 'AR'] 
+valid_class =  ['BB', 'BC', 'BM', 'CV', 'CVL', 'CL', 'CA', 'CB', 'SS', 'AR'] 
 
 # Execute menu
 def exec_menu(choice):
@@ -182,7 +182,7 @@ def menu3():
 
 def menu4():
     # This will scrape the AL Wiki and update the data_export file
-    data_scrape.scrape()
+    data_scrape.scrape(100, False)
     print("Updated data_export.json")
     choice = input("Enter 0 to exit or main for main menu: ")
     exec_menu(choice)
