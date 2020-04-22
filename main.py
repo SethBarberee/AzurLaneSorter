@@ -118,7 +118,6 @@ def menu1():
 
 def menu2():
     """ Menu that sorts our data however we like to our top 3 for front and back"""
-    # TODO What if we want certain ships in our lineup??
     global ship_dict
     # Split dictionary into backline and frontline
     (backline, frontline, subline) = utils.find_line(ship_dict)
@@ -151,12 +150,12 @@ def menu2():
         if(name_choice == 'N/A' or name_choice == ""):
             break
         else:
+            # TODO I can do index here, right?
             for ship in ship_dict:
                 # check for the name
                 if ship["Name"] == name_choice:
                     preset_names.append(ship) 
                     break
-            # TODO search ship_dict and add
             test = input('Would you like to add another? (Y/N): ')
 
     # Pass it all in and create the lineup
