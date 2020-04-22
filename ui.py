@@ -87,9 +87,14 @@ def main():
     label_sub = QLabel('Submarines')
 
     total_list_widget = QListWidget()
+
+    # Set up the line widgets
     front_list_widget = UILineWidget()
+    front_list_widget.set_label('Frontline')
     back_list_widget = UILineWidget()
+    back_list_widget.set_label('Backline')
     sub_list_widget = UILineWidget()
+    sub_list_widget.set_label('Subline')
 
     # Connect buttons to functions
     button1.clicked.connect(lambda:load_ships(total_list_widget))
