@@ -18,7 +18,7 @@ class UIShipWidget(QWidget):
 
     def update_image(self, image, label):
         self.Label.setText(label)
-        # TODO check if pic storage exists
+        # TODO check if pic storage exists and if pic already exists
         image_dir = "picStorage"
         name_image = label.replace(" (Retrofit)", "Kai")
         image_path = image_dir + "/" + name_image + "Icon.png"
@@ -51,6 +51,37 @@ class UIShipWidget(QWidget):
         # All good so set the image
         self.Picture.setPixmap(QPixmap(image_path))
 
+class UIRadioList(QWidget):
+    def __init__(self, parent = None):
+        QWidget.__init__(self, parent=parent)
+        # TODO how do I do this with just the list of stats
+        self.b1 = QRadioButton("HP")
+        self.b1.setChecked(True) # set HP as default
+        self.b2 = QRadioButton("Armor")
+        self.b3 = QRadioButton("Evasion")
+        self.b4 = QRadioButton("Firepower")
+        self.b5 = QRadioButton("Button1")
+        self.b6 = QRadioButton("Button1")
+        self.b7 = QRadioButton("Button1")
+        self.b8 = QRadioButton("Button1")
+        layout = QVBoxLayout(self)
+        layout.addWidget(self.b1)
+        layout.addWidget(self.b2)
+        layout.addWidget(self.b3)
+        layout.addWidget(self.b4)
+        layout.addWidget(self.b5)
+        layout.addWidget(self.b6)
+        layout.addWidget(self.b7)
+        layout.addWidget(self.b8)
+    # This goes through all the RadioButtons and finds which one is selected
+    # This is helpful when we figure out how to sort each line
+    def get_selected(self):
+        selected = ""
+        for radio in self.findChildren(QRadioButton):
+            if radio.isChecked():
+                selected = radio.text()
+                break # we found it so let's end for now
+        return selected
 
 class UILineWidget(QWidget):
     def __init__(self, parent = None):
@@ -58,6 +89,7 @@ class UILineWidget(QWidget):
         self.Label1 = UIShipWidget()
         self.Label2 = UIShipWidget()
         self.Label3 = UIShipWidget()
+        self.SortList = UIRadioList()
         self.TitleLabel = QLabel('Frontline') # TODO figure out best way to change this
 
         layout = QHBoxLayout(self) # Horizontal box layout
@@ -65,6 +97,7 @@ class UILineWidget(QWidget):
         layout.addWidget(self.Label1)
         layout.addWidget(self.Label2)
         layout.addWidget(self.Label3)
+        layout.addWidget(self.SortList)
 
     def set_label(self, new_label):
         self.TitleLabel.setText(new_label)

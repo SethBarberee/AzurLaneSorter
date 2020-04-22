@@ -27,10 +27,13 @@ def load_ships(list_widget):
 
 def sort_ships(front_list, back_list, sub_list):
     global ship_dict
-    # TODO make someway to override this
-    ship_dict = utils.sort_ships(ship_dict, 'HP')
     # Filter the lines
     (backline, frontline, subline) = utils.find_line(ship_dict)
+    # Sort by selected stat
+    backline = utils.sort_ships(backline, back_list.SortList.get_selected())
+    frontline = utils.sort_ships(frontline, front_list.SortList.get_selected())
+    subline = utils.sort_ships(subline, sub_list.SortList.get_selected())
+    
     # Create the top 3 and calculate oil
     # TODO make way to get preset names
     (back, front, oil, sub, suboil) = utils.create_line(backline, frontline, subline, [], True)
@@ -57,9 +60,8 @@ def sort_ships(front_list, back_list, sub_list):
     sub_list.update_pics(sub_images, sub_names)
 
 def clear_boxes(front_list, back_list, sub_list):
-    front_list.clear()
-    back_list.clear()
-    sub_list.clear()
+    print("TODO: fix this")
+    # TODO fix this to clear the widgets
 
 def main():
     app = QApplication([])
