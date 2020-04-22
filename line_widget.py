@@ -4,6 +4,8 @@ from PyQt5.QtGui import QIcon, QPixmap
 import os.path
 from os import path
 
+import utils
+
 import requests
 import urllib
 
@@ -56,26 +58,14 @@ class UIShipWidget(QWidget):
 class UIRadioList(QWidget):
     def __init__(self, parent = None):
         QWidget.__init__(self, parent=parent)
-        # TODO how do I use my global list of stats from utils
-        self.b1 = QRadioButton("HP")
-        self.b1.setChecked(True) # set HP as default
-        self.b2 = QRadioButton("Armor")
-        self.b3 = QRadioButton("Evasion")
-        self.b4 = QRadioButton("Firepower")
-        self.b5 = QRadioButton("Button1")
-        self.b6 = QRadioButton("Button1")
-        self.b7 = QRadioButton("Button1")
-        self.b8 = QRadioButton("Button1")
-        # TODO maybe do something other than vertical layout
         layout = QVBoxLayout(self)
-        layout.addWidget(self.b1)
-        layout.addWidget(self.b2)
-        layout.addWidget(self.b3)
-        layout.addWidget(self.b4)
-        layout.addWidget(self.b5)
-        layout.addWidget(self.b6)
-        layout.addWidget(self.b7)
-        layout.addWidget(self.b8)
+
+        # Loop through all the valid stats and add a radio button
+        for item in utils.valid_stats:
+            self.new_button = QRadioButton(item)
+            layout.addWidget(self.new_button)
+        # Set first one as default
+        self.findChildren(QRadioButton)[0].setChecked(True)
 
     # This goes through all the RadioButtons and finds which one is selected
     # This is helpful when we figure out how to sort each line

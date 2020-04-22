@@ -73,25 +73,20 @@ def find_line(ships_dict):
 def sort_ships(ships_dict, stat='HP'):
     """ Sort the ship dictionary given a certain stat """
     # First, check if the stat is in the dictionary
-    if stat == "":
-        print("Setting to HP")
-        stat = "HP"
-        
     try:
-        if stat in ships_dict[0]:
-            if stat == 'Armor':
-                # Armor only has three values
-                keyorder = ['Heavy', 'Medium', 'Light' ]
-                order = {key: i for i, key in enumerate(keyorder)}
-                sorted_ship_dict = sorted(ships_dict, key = lambda d: order[d[stat]])
-            else:
-                sorted_ship_dict = sorted(ships_dict, key = lambda d: d[stat], reverse=True)
-            return sorted_ship_dict
-        else:
-            print("Key doesn't exist")
-            return
+        valid_stats.index(stat)
     except:
-        return
+        # Not there so we'll use HP
+        stat = "HP"
+
+    if stat == 'Armor':
+        # Armor only has three values
+        keyorder = ['Heavy', 'Medium', 'Light' ]
+        order = {key: i for i, key in enumerate(keyorder)}
+        sorted_ship_dict = sorted(ships_dict, key = lambda d: order[d[stat]])
+    else:
+        sorted_ship_dict = sorted(ships_dict, key = lambda d: d[stat], reverse=True)
+    return sorted_ship_dict
 
 def create_line(backline, frontline, subline, preset_names, UI=False):
     # Create a list of names for each line
