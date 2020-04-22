@@ -1,5 +1,6 @@
 from PyQt5.QtWidgets import *
 import data_scrape, utils
+from line_widget import UILineWidget
 
 ship_dict = [] # global dictionary for all the ships
 
@@ -26,10 +27,6 @@ def load_ships(list_widget):
 
 def sort_ships(front_list, back_list, sub_list):
     global ship_dict
-    # Clear the lists
-    front_list.clear()
-    back_list.clear()
-    sub_list.clear()
     # TODO make someway to override this
     ship_dict = utils.sort_ships(ship_dict, 'HP')
     # Filter the lines
@@ -38,9 +35,26 @@ def sort_ships(front_list, back_list, sub_list):
     # TODO make way to get preset names
     (back, front, oil, sub, suboil) = utils.create_line(backline, frontline, subline, [], True)
     # Add names to the list
-    back_list.addItems(back)
-    front_list.addItems(front)
-    sub_list.addItems(sub)
+    back_images = []
+    back_names = []
+    for i in range(len(back)):
+        back_images.append(back[i]['Image'])
+        back_names.append(back[i]['Name'])
+    back_list.update_pics(back_images, back_names)
+
+    front_images = []
+    front_names = []
+    for i in range(len(back)):
+        front_images.append(front[i]['Image'])
+        front_names.append(front[i]['Name'])
+    front_list.update_pics(front_images, front_names)
+
+    sub_images = []
+    sub_names = []
+    for i in range(len(back)):
+        sub_images.append(sub[i]['Image'])
+        sub_names.append(sub[i]['Name'])
+    sub_list.update_pics(sub_images, sub_names)
 
 def clear_boxes(front_list, back_list, sub_list):
     front_list.clear()
@@ -73,9 +87,9 @@ def main():
     label_sub = QLabel('Submarines')
 
     total_list_widget = QListWidget()
-    front_list_widget = QListWidget()
-    back_list_widget = QListWidget()
-    sub_list_widget = QListWidget()
+    front_list_widget = UILineWidget()
+    back_list_widget = UILineWidget()
+    sub_list_widget = UILineWidget()
 
     # Connect buttons to functions
     button1.clicked.connect(lambda:load_ships(total_list_widget))
@@ -94,11 +108,11 @@ def main():
     # Add list widgets and labels to respective layouts
     total.addWidget(label_total)
     total.addWidget(total_list_widget)
-    back.addWidget(label_back)
+    #back.addWidget(label_back)
     back.addWidget(back_list_widget)
-    front.addWidget(label_front)
+    #front.addWidget(label_front)
     front.addWidget(front_list_widget)
-    sub.addWidget(label_sub)
+    #sub.addWidget(label_sub)
     sub.addWidget(sub_list_widget)
 
     # Nest the layouts in the main layout

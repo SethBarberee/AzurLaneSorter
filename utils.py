@@ -86,15 +86,24 @@ def create_line(backline, frontline, subline, preset_names, UI=False):
         (preset_backline, preset_frontline, preset_subline) = find_line(preset_names)
         for i in range(len(preset_backline)):
             # Add the backline ship and cost
-            backline_names.append(preset_backline[i]['Name'])
+            if UI == False:
+                backline_names.append(preset_backline[i]['Name'])
+            else:
+                backline_names.append(preset_backline[i])
             oil_cost += int(float(preset_backline[i]['Cost']))
         for i in range(len(preset_frontline)):
             # Add the backline ship and cost
-            frontline_names.append(preset_frontline[i]['Name'])
+            if UI == False:
+                frontline_names.append(preset_frontline[i]['Name'])
+            else:
+                frontline_names.append(preset_frontline[i])
             oil_cost += int(float(preset_frontline[i]['Cost']))
         for i in range(len(preset_subline)):
             # Add the backline ship and cost
-            subline_names.append(preset_subline[i]['Name'])
+            if UI == False:
+                subline_names.append(preset_subline[i]['Name'])
+            else:
+                subline_names.append(preset_subline[i])
             suboil_cost += int(float(preset_subline[i]['Cost']))
 
     # See how many ships we have in each lineup accounting for presets
@@ -107,37 +116,55 @@ def create_line(backline, frontline, subline, preset_names, UI=False):
         # Only do the top three
         for i in range(3):
             # Add the backline ship and cost
-            backline_names.append(backline[i]['Name'])
+            if UI == False:
+                backline_names.append(backline[i]['Name'])
+            else:
+                backline_names.append(backline[i])
             oil_cost += int(float(backline[i]['Cost']))
     else:
         print(max_range_back)
         for i in range(max_range_back):
             # Add the backline ship and cost
-            backline_names.append(backline[i]['Name'])
+            if UI == False:
+                backline_names.append(backline[i]['Name'])
+            else:
+                backline_names.append(backline[i])
             oil_cost += int(float(backline[i]['Cost']))
     # Frontline 
     if(max_range_front >= 3):
         # Only do the top three
         for i in range(3):
             # Add the frontline ship and cost
-            frontline_names.append(frontline[i]['Name'])
+            if UI == False:
+                frontline_names.append(frontline[i]['Name'])
+            else:
+                frontline_names.append(frontline[i])
             oil_cost += int(float(frontline[i]['Cost']))
     else:
         for i in range(max_range_front):
             # Add the frontline ship and cost
-            frontline_names.append(frontline[i]['Name'])
+            if UI == False:
+                frontline_names.append(frontline[i]['Name'])
+            else:
+                frontline_names.append(frontline[i])
             oil_cost += int(float(frontline[i]['Cost']))
     # Subline
     if(max_range_sub >= 3):
         # Only do the top three
         for i in range(3):
             # Add the frontline ship and cost
-            subline_names.append(subline[i]['Name'])
+            if UI == False:
+                subline_names.append(subline[i]['Name'])
+            else:
+                subline_names.append(subline[i])
             suboil_cost += int(float(subline[i]['Cost']))
     else:
         for i in range(max_range_sub):
             # Add the frontline ship and cost
-            frontline_names.append(subline[i]['Name'])
+            if UI == False:
+                subline_names.append(subline[i]['Name'])
+            else:
+                subline_names.append(subline[i])
             suboil_cost += int(float(subline[i]['Cost']))
 
     if UI == False:
