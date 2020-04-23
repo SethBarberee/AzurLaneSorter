@@ -7,6 +7,8 @@ from os import path
 import requests
 import urllib
 
+import threading
+
 class UIShipWidget(QWidget):
     def __init__(self, parent = None):
         QWidget.__init__(self, parent=parent)
@@ -54,7 +56,7 @@ class UIShipWidget(QWidget):
 class UIRadioList(QWidget):
     def __init__(self, parent = None):
         QWidget.__init__(self, parent=parent)
-        # TODO how do I do this with just the list of stats
+        # TODO how do I use my global list of stats from utils
         self.b1 = QRadioButton("HP")
         self.b1.setChecked(True) # set HP as default
         self.b2 = QRadioButton("Armor")
@@ -64,6 +66,7 @@ class UIRadioList(QWidget):
         self.b6 = QRadioButton("Button1")
         self.b7 = QRadioButton("Button1")
         self.b8 = QRadioButton("Button1")
+        # TODO maybe do something other than vertical layout
         layout = QVBoxLayout(self)
         layout.addWidget(self.b1)
         layout.addWidget(self.b2)
@@ -73,6 +76,7 @@ class UIRadioList(QWidget):
         layout.addWidget(self.b6)
         layout.addWidget(self.b7)
         layout.addWidget(self.b8)
+
     # This goes through all the RadioButtons and finds which one is selected
     # This is helpful when we figure out how to sort each line
     def get_selected(self):
@@ -90,7 +94,7 @@ class UILineWidget(QWidget):
         self.Label2 = UIShipWidget()
         self.Label3 = UIShipWidget()
         self.SortList = UIRadioList()
-        self.TitleLabel = QLabel('Frontline') # TODO figure out best way to change this
+        self.TitleLabel = QLabel('Frontline')
 
         layout = QHBoxLayout(self) # Horizontal box layout
         layout.addWidget(self.TitleLabel)
@@ -101,8 +105,15 @@ class UILineWidget(QWidget):
 
     def set_label(self, new_label):
         self.TitleLabel.setText(new_label)
-    
+
     def update_pics(self, image_list, name_list):
-        self.Label1.update_image(image_list[0], name_list[0])
-        self.Label2.update_image(image_list[1], name_list[1])
-        self.Label3.update_image(image_list[2], name_list[2])
+        # Do a batch update of the images
+        t1 = threading.Thread(target=self.Label1.update_image, args=(image_list[0],name_list[0])) 
+        t2 = threading.Thread(target=self.Label2.update_image, args=(image_list[1],name_list[1])) 
+        t3 = threading.Thread(target=self.Label3.update_image, args=(image_list[2],name_list[2])) 
+        t1.start()
+        t2.start()
+        t3.start()
+        t1.join()
+        t2.join()
+        t3.join()

@@ -5,11 +5,6 @@ import utils, data_scrape #local
 ship_dict = [] # global dictionary for all the ships
 menu_actions = {} # blank definition here but we fill it at the bottom of the file
 
-# Useful lists for filtering and data validation
-valid_nations = ['Eagle Union', 'Royal Navy', 'Ironblood', 'Sakura Empire', 'Dragon Empery', 'Sardegna Empire', 'Northern Parliament', 'Iris Libre', 'Vichya Dominion']
-valid_rarity =  ['Common', 'Rare', 'Elite', 'Super Rare', 'Ultra']
-valid_class =  ['BB', 'BC', 'BM', 'CV', 'CVL', 'CL', 'CA', 'CB', 'SS', 'AR'] 
-
 # Execute menu
 def exec_menu(choice):
     os.system('clear')

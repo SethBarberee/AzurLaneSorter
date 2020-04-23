@@ -11,11 +11,34 @@ import json # global
 # create_line
 # Filter best three for each line and calculate oil cost
 
+
+# Global dictionaries that UI/Console use for validation
+global valid_nations
+global valid_rarity
+global valid_class
+global valid_stats
+
 # Useful lists for filtering and data validation
 valid_nations = ['Eagle Union', 'Royal Navy', 'Ironblood', 'Sakura Empire', 'Dragon Empery', 'Sardegna Empire', 'Northern Parliament', 'Iris Libre', 'Vichya Dominion']
 valid_rarity =  ['Common', 'Rare', 'Elite', 'Super Rare', 'Ultra']
 valid_class =  ['BB', 'BC', 'BM', 'CV', 'CVL', 'CL', 'CA', 'CB', 'DD', 'SS', 'AR'] 
-
+valid_stats = [
+            "HP",
+            "Luck",
+            "Armor",
+            "Speed",
+            "Firepower",
+            "Anti-Air",
+            "Torpedo",
+            "Evasion",
+            "Aviation",
+            "Cost",
+            "Reload",
+            "Anti-Submarine",
+            "Oxygen",
+            "Ammunition",
+            "Accuracy",
+            ]
 
 def parse_data(filename='data.json'):
     """ Pass in a JSON file of ships and return a python dictionary """
@@ -179,7 +202,7 @@ def create_line(backline, frontline, subline, preset_names, UI=False):
         print(subline_names)
         print("Sub Cost: ")
         print(suboil_cost)
-        return    
+        return
     else:
         # Return all the data
         return(backline_names, frontline_names, oil_cost, subline_names, suboil_cost)

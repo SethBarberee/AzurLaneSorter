@@ -2,7 +2,18 @@ from PyQt5.QtWidgets import *
 import data_scrape, utils
 from line_widget import UILineWidget
 
+import threading
+
 ship_dict = [] # global dictionary for all the ships
+
+# Take the line and prepare the image link and Name
+def prepare_for_update(line):
+    images = []
+    names = []
+    for i in range(len(line)):
+        images.append(line[i]['Image'])
+        names.append(line[i]['Name'])
+    return (images, names)
 
 def scrape_wiki(checkbox):
     # check whether we need to import only the list or all of them
@@ -30,35 +41,35 @@ def sort_ships(front_list, back_list, sub_list):
     # Filter the lines
     (backline, frontline, subline) = utils.find_line(ship_dict)
     # Sort by selected stat
+    # TODO maybe parallelize
     backline = utils.sort_ships(backline, back_list.SortList.get_selected())
     frontline = utils.sort_ships(frontline, front_list.SortList.get_selected())
     subline = utils.sort_ships(subline, sub_list.SortList.get_selected())
-    
-    # Create the top 3 and calculate oil
+
     # TODO make way to get preset names
     (back, front, oil, sub, suboil) = utils.create_line(backline, frontline, subline, [], True)
+
     # Add names to the list
-    back_images = []
-    back_names = []
-    for i in range(len(back)):
-        back_images.append(back[i]['Image'])
-        back_names.append(back[i]['Name'])
-    back_list.update_pics(back_images, back_names)
+    # TODO I could probably parallelize appending the names/images to respective lists
+    (back_images, back_names) = prepare_for_update(back)
+    # dispatch thread to update backline
+    t1 = threading.Thread(target=back_list.update_pics, args=(back_images,back_names)) 
+    t1.start()
 
-    front_images = []
-    front_names = []
-    for i in range(len(back)):
-        front_images.append(front[i]['Image'])
-        front_names.append(front[i]['Name'])
-    front_list.update_pics(front_images, front_names)
+    (front_images, front_names) = prepare_for_update(front)
+    # dispatch thread to update frontline
+    t2 = threading.Thread(target=front_list.update_pics, args=(front_images,front_names)) 
+    t2.start()
 
-    sub_images = []
-    sub_names = []
-    for i in range(len(back)):
-        sub_images.append(sub[i]['Image'])
-        sub_names.append(sub[i]['Name'])
-    sub_list.update_pics(sub_images, sub_names)
+    (sub_images, sub_names) = prepare_for_update(sub)
+    # dispatch thread to update subline
+    t3 = threading.Thread(target=sub_list.update_pics, args=(sub_images,sub_names)) 
+    t3.start()
 
+    t1.join()
+    t2.join()
+    t3.join()
+    
 def clear_boxes(front_list, back_list, sub_list):
     print("TODO: fix this")
     # TODO fix this to clear the widgets
