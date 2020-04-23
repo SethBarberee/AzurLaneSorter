@@ -55,15 +55,66 @@ class UIShipWidget(QWidget):
         # All good so set the image
         self.Picture.setPixmap(QPixmap(image_path))
 
-class UIRadioList(QWidget):
+class UIFilterList(QWidget):
     def __init__(self, parent = None):
         QWidget.__init__(self, parent=parent)
-        layout = QVBoxLayout(self)
+        self.rarity_layout = QHBoxLayout()
+        self.rarity = QCheckBox("Rarity")
+        self.rarity_enter = QComboBox()
+        for item in utils.valid_rarity:
+            self.rarity_enter.addItem(item)
+        self.rarity_layout.addWidget(self.rarity)
+        self.rarity_layout.addWidget(self.rarity_enter)
 
+        self.nation_layout = QHBoxLayout()
+        self.nation = QCheckBox("Nation")
+        self.nation_enter = QComboBox()
+        for item in utils.valid_nations:
+            self.nation_enter.addItem(item)
+        self.nation_layout.addWidget(self.nation)
+        self.nation_layout.addWidget(self.nation_enter)
+
+        self.class_layout = QHBoxLayout()
+        self._class = QCheckBox("Class")
+        self.class_enter = QComboBox()
+        for item in utils.valid_class:
+            self.class_enter.addItem(item)
+        self.class_layout.addWidget(self._class)
+        self.class_layout.addWidget(self.class_enter)
+
+        layout = QVBoxLayout(self)
+        layout.addLayout(self.rarity_layout)
+        layout.addLayout(self.nation_layout)
+        layout.addLayout(self.class_layout)
+
+    def get_filters(self):
+        # return a list/dictionary of filters
+        current_filters = {}
+        for check in self.findChildren(QCheckBox):
+            if(check.isChecked()):
+                # get combo box part of checkbox
+                checkbox = check.text()
+                if checkbox == "Rarity":
+                    selected_item = self.rarity_enter.currentText()
+                elif checkbox ==  "Nation":
+                    selected_item = self.nation_enter.currentText()
+                else:
+                    selected_item = self.class_enter.currentText()
+                current_filters[check.text()] = selected_item
+        return current_filters
+
+class UISortList(QWidget):
+    def __init__(self, parent = None):
+        QWidget.__init__(self, parent=parent)
+        layout = QGridLayout(self)
+
+        divider = len(utils.valid_stats) / 3 # Split into three columns
         # Loop through all the valid stats and add a radio button
-        for item in utils.valid_stats:
-            self.new_button = QRadioButton(item)
-            layout.addWidget(self.new_button)
+        for i in range(len(utils.valid_stats)):
+            row = i % divider # figure out the row
+            col = i / divider # figure out the column
+            self.new_button = QRadioButton(utils.valid_stats[i])
+            layout.addWidget(self.new_button, row, col)
         # Set first one as default
         self.findChildren(QRadioButton)[0].setChecked(True)
 
@@ -83,7 +134,8 @@ class UILineWidget(QWidget):
         self.Label1 = UIShipWidget()
         self.Label2 = UIShipWidget()
         self.Label3 = UIShipWidget()
-        self.SortList = UIRadioList()
+        self.SortList = UISortList()
+        self.FilterList = UIFilterList()
         self.TitleLabel = QLabel('Frontline')
 
         layout = QHBoxLayout(self) # Horizontal box layout
@@ -92,12 +144,16 @@ class UILineWidget(QWidget):
         layout.addWidget(self.Label2)
         layout.addWidget(self.Label3)
         layout.addWidget(self.SortList)
+        layout.addWidget(self.FilterList)
 
     def set_label(self, new_label):
         self.TitleLabel.setText(new_label)
 
     def update_pics(self, image_list, name_list):
         # Do a batch update of the images
+        # TODO/BUG handle case when list < 3
+        if len(image_list) == 0 or len(name_list) == 0:
+            return
         t1 = threading.Thread(target=self.Label1.update_image, args=(image_list[0],name_list[0])) 
         t2 = threading.Thread(target=self.Label2.update_image, args=(image_list[1],name_list[1])) 
         t3 = threading.Thread(target=self.Label3.update_image, args=(image_list[2],name_list[2])) 

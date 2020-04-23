@@ -38,14 +38,27 @@ def load_ships(list_widget):
 
 def sort_ships(front_list, back_list, sub_list):
     global ship_dict
-    # Filter the lines
+    # Filter by line
     (backline, frontline, subline) = utils.find_line(ship_dict)
+
     # Sort by selected stat
     # TODO maybe parallelize
     backline = utils.sort_ships(backline, back_list.SortList.get_selected())
     frontline = utils.sort_ships(frontline, front_list.SortList.get_selected())
     subline = utils.sort_ships(subline, sub_list.SortList.get_selected())
 
+    # Get filters
+    back_filters = back_list.FilterList.get_filters()
+    front_filters = front_list.FilterList.get_filters()
+    sub_filters = sub_list.FilterList.get_filters()
+
+    # TODO loop through filters and apply filters
+    for i in back_filters.keys():
+        backline = utils.filter_ships_ui(backline, i, back_filters[i])
+    for i in front_filters.keys():
+        frontline = utils.filter_ships_ui(frontline, i, front_filters[i])
+    for i in sub_filters.keys():
+        subline = utils.filter_ships_ui(subline, i, sub_filters[i])
     # TODO make way to get preset names
     (back, front, oil, sub, suboil) = utils.create_line(backline, frontline, subline, [], True)
 

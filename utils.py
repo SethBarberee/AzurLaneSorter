@@ -140,7 +140,6 @@ def create_line(backline, frontline, subline, preset_names, UI=False):
                 backline_names.append(backline[i])
             oil_cost += int(float(backline[i]['Cost']))
     else:
-        print(max_range_back)
         for i in range(max_range_back):
             # Add the backline ship and cost
             if UI == False:
@@ -223,5 +222,15 @@ def filter_ships(ships_dict, filter_name="Nation"):
     print("Filtering by " + filter_input)
     for ship in ships_dict:
         if(ship[filter_name] == filter_input):
+            new_ship_dict.append(ship)
+    return new_ship_dict
+
+# TODO merge with normal filter
+def filter_ships_ui(ships_dict, filter_name="Nation", filter_value="Eagle Union"):
+    """ Filter the ship dictionary based on Nation or Rarity """
+    new_ship_dict = []
+    print("Filtering by " + filter_value)
+    for ship in ships_dict:
+        if(ship[filter_name] == filter_value):
             new_ship_dict.append(ship)
     return new_ship_dict
