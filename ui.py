@@ -1,6 +1,6 @@
 from PyQt5.QtWidgets import *
 import data_scrape, utils
-from line_widget import UILineWidget
+from UILineWidget import UILineWidget
 
 import threading
 
