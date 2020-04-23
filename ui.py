@@ -4,7 +4,28 @@ from UILineWidget import UILineWidget
 
 import threading
 
-ship_dict = [] # global dictionary for all the ships
+ship_dict = {} # global dictionary for all the ships
+
+preset_ships = []
+
+def add_preset(total_list_widget, preset_list_widget):
+    global preset_ships
+    global ship_dict
+    for item in total_list_widget.selectedItems():
+        for ship in ship_dict:
+            if ship["Name"] == item.text():
+                preset_ships.append(ship) 
+                preset_list_widget.addItem(item.text())
+                break
+
+def remove_preset(preset_list_widget):
+    global preset_ships
+    for item in preset_list_widget.selectedItems():
+        for ship in ship_dict:
+            if ship["Name"] == item.text():
+                preset_list_widget.takeItem(preset_list_widget.row(item))
+                preset_ships.remove(ship)
+                break
 
 # Take the line and prepare the image link and Name
 def prepare_for_update(line):
@@ -60,7 +81,7 @@ def sort_ships(front_list, back_list, sub_list):
     for i in sub_filters.keys():
         subline = utils.filter_ships_ui(subline, i, sub_filters[i])
     # TODO make way to get preset names
-    (back, front, oil, sub, suboil) = utils.create_line(backline, frontline, subline, [], True)
+    (back, front, oil, sub, suboil) = utils.create_line(backline, frontline, subline, preset_ships, True)
 
     # Add names to the list
     # TODO I could probably parallelize appending the names/images to respective lists
@@ -85,6 +106,8 @@ def sort_ships(front_list, back_list, sub_list):
     
 def clear_boxes(front_list, back_list, sub_list):
     print("TODO: fix this")
+    global preset_ships
+    preset_ships = []
     # TODO fix this to clear the widgets
 
 def main():
@@ -112,7 +135,24 @@ def main():
     label_front = QLabel('Frontline')
     label_sub = QLabel('Submarines')
 
+    # Create the preset layout
+    preset_layout = QVBoxLayout()
+    AddPreset = QPushButton(">>")
+    RemovePreset = QPushButton("<<")
+    preset_layout.addWidget(AddPreset)
+    preset_layout.addWidget(RemovePreset)
+
+    # Create Preset/Total Layout
     total_list_widget = QListWidget()
+    preset_list_widget = QListWidget()
+    list_layout = QHBoxLayout()
+    list_layout.addWidget(total_list_widget)
+    list_layout.addLayout(preset_layout)
+    list_layout.addWidget(preset_list_widget)
+    total.addWidget(label_total)
+    total.addLayout(list_layout)
+    AddPreset.clicked.connect(lambda:add_preset(total_list_widget, preset_list_widget))
+    RemovePreset.clicked.connect(lambda:remove_preset(preset_list_widget))
 
     # Set up the line widgets
     front_list_widget = UILineWidget()
@@ -121,6 +161,10 @@ def main():
     back_list_widget.set_label('Backline')
     sub_list_widget = UILineWidget()
     sub_list_widget.set_label('Subline')
+    back.addWidget(back_list_widget)
+    front.addWidget(front_list_widget)
+    sub.addWidget(sub_list_widget)
+ 
 
     # Connect buttons to functions
     button1.clicked.connect(lambda:load_ships(total_list_widget))
@@ -137,15 +181,6 @@ def main():
     layout.addWidget(checkbox1)
 
     # Add list widgets and labels to respective layouts
-    total.addWidget(label_total)
-    total.addWidget(total_list_widget)
-    #back.addWidget(label_back)
-    back.addWidget(back_list_widget)
-    #front.addWidget(label_front)
-    front.addWidget(front_list_widget)
-    #sub.addWidget(label_sub)
-    sub.addWidget(sub_list_widget)
-
     # Nest the layouts in the main layout
     layout.addLayout(total)
     layout.addLayout(back)
