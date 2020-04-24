@@ -13,10 +13,15 @@ def add_preset(total_list_widget, preset_list_widget):
     global ship_dict
     for item in total_list_widget.selectedItems():
         for ship in ship_dict:
-            if ship["Name"] == item.text():
-                preset_ships.append(ship) 
-                preset_list_widget.addItem(item.text())
-                break
+            try:
+                # Check if we have it in our list yet
+                preset_ships.index(ship)
+            except:
+                # we know it's not so add it now
+                if ship["Name"] == item.text():
+                    preset_ships.append(ship) 
+                    preset_list_widget.addItem(item.text())
+                    break
 
 def remove_preset(preset_list_widget):
     global preset_ships
@@ -73,14 +78,15 @@ def sort_ships(front_list, back_list, sub_list):
     front_filters = front_list.FilterList.get_filters()
     sub_filters = sub_list.FilterList.get_filters()
 
-    # TODO loop through filters and apply filters
+    # loop through filters and apply filters
     for i in back_filters.keys():
         backline = utils.filter_ships_ui(backline, i, back_filters[i])
     for i in front_filters.keys():
         frontline = utils.filter_ships_ui(frontline, i, front_filters[i])
     for i in sub_filters.keys():
         subline = utils.filter_ships_ui(subline, i, sub_filters[i])
-    # TODO make way to get preset names
+
+    # Create the lists
     (back, front, oil, sub, suboil) = utils.create_line(backline, frontline, subline, preset_ships, True)
 
     # Add names to the list
@@ -103,12 +109,13 @@ def sort_ships(front_list, back_list, sub_list):
     t1.join()
     t2.join()
     t3.join()
-    
-def clear_boxes(front_list, back_list, sub_list):
-    print("TODO: fix this")
+
+def clear_boxes(front_list, back_list, sub_list, preset_list):
     global preset_ships
     preset_ships = []
+    preset_list.clear()
     # TODO fix this to clear the widgets
+    print("TODO: fix to clear other lines")
 
 def main():
     app = QApplication([])
@@ -134,6 +141,7 @@ def main():
     label_back = QLabel('Backline')
     label_front = QLabel('Frontline')
     label_sub = QLabel('Submarines')
+    label_preset = QLabel('Preset Ships')
 
     # Create the preset layout
     preset_layout = QVBoxLayout()
@@ -149,6 +157,7 @@ def main():
     list_layout.addWidget(total_list_widget)
     list_layout.addLayout(preset_layout)
     list_layout.addWidget(preset_list_widget)
+    list_layout.addWidget(label_preset)
     total.addWidget(label_total)
     total.addLayout(list_layout)
     AddPreset.clicked.connect(lambda:add_preset(total_list_widget, preset_list_widget))
@@ -170,7 +179,7 @@ def main():
     button1.clicked.connect(lambda:load_ships(total_list_widget))
     button2.clicked.connect(lambda:sort_ships(front_list_widget, back_list_widget, sub_list_widget))
     button4.clicked.connect(lambda:scrape_wiki(checkbox1))
-    button5.clicked.connect(lambda:clear_boxes(front_list_widget, back_list_widget, sub_list_widget))
+    button5.clicked.connect(lambda:clear_boxes(front_list_widget, back_list_widget, sub_list_widget, preset_list_widget))
 
     # Add menu buttons
     layout.addWidget(button1)
