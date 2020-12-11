@@ -15,6 +15,10 @@ class UIShipWidget(QWidget):
         layout.addWidget(self.Picture)
         layout.addWidget(self.Label)
 
+    def clear_widget(self):
+        self.Label.setText('Ship')
+        self.Picture.setText('N/A')
+
     def update_image(self, image, label):
         # TODO use JoinPaths from pathLib
         self.Label.setText(label)

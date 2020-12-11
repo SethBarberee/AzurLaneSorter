@@ -21,7 +21,11 @@ global valid_stats
 # Useful lists for filtering and data validation
 valid_nations = ['Eagle Union', 'Royal Navy', 'Ironblood', 'Sakura Empire', 'Dragon Empery', 'Sardegna Empire', 'North Union', 'Iris Libre', 'Vichya Dominion']
 valid_rarity =  ['Common', 'Rare', 'Elite', 'Super Rare', 'Ultra']
-valid_class =  ['BB', 'BC', 'BM', 'CV', 'CVL', 'CL', 'CA', 'CB', 'DD', 'SS', 'AR'] 
+valid_class = {
+        "Backline": ['BB', 'BC', 'BM', 'CV', 'CVL', 'AR'],
+        "Frontline": ['CL', 'CA', 'CB', 'DD'],
+        "Subline": ['SS', 'AM'],
+}
 valid_stats = [
             "HP",
             "Luck",
@@ -55,8 +59,8 @@ def find_line(ships_dict):
     frontline = []
     subline = []
     # These are the classes that go in the backline
-    backline_set = {'BB', 'BC', 'CV', 'CVL', 'AR', 'CM'}
-    subline_set = {'SS'}
+    backline_set = {'BB', 'BC', 'CV', 'CVL', 'AR', 'BM'}
+    subline_set = {'SS', 'AM'}
     for ship in ships_dict:
         if ship['Class'] in backline_set:
             # Matches one of the classes so add it

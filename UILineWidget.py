@@ -11,14 +11,14 @@ from UISortList import UISortList
 import threading
 
 class UILineWidget(QWidget):
-    def __init__(self, parent = None):
+    def __init__(self, label, parent = None):
         QWidget.__init__(self, parent=parent)
         self.Label1 = UIShipWidget()
         self.Label2 = UIShipWidget()
         self.Label3 = UIShipWidget()
         self.SortList = UISortList()
-        self.FilterList = UIFilterList()
-        self.TitleLabel = QLabel('Frontline')
+        self.FilterList = UIFilterList(label)
+        self.TitleLabel = QLabel(label)
 
         layout = QHBoxLayout(self) # Horizontal box layout
         layout.addWidget(self.TitleLabel)
@@ -31,10 +31,14 @@ class UILineWidget(QWidget):
     def set_label(self, new_label):
         self.TitleLabel.setText(new_label)
 
+    def clear_line(self):
+        self.Label1.clear_widget()
+        self.Label2.clear_widget()
+        self.Label3.clear_widget()
+
     def update_pics(self, image_list, name_list):
         # Do a batch update of the images
         # TODO/BUG handle case when list < 3
-        print(name_list)
         if len(image_list) == 0 or len(name_list) == 0:
             return
         if len(name_list) == 2:

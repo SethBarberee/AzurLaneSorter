@@ -1,4 +1,5 @@
 from PyQt5.QtWidgets import *
+from PyQt5.QtGui import QIcon
 import data_scrape, utils
 from UILineWidget import UILineWidget
 
@@ -62,9 +63,10 @@ def load_ships(list_widget):
     alert.setText('Ships have been loaded from data.json')
     alert.exec_()
 
-def sort_ships(front_list, back_list, sub_list):
+def sort_ships(front_list, back_list, sub_list, preset_list):
     global ship_dict
     # Filter by line
+    clear_boxes(front_list, back_list, sub_list, preset_list)
     (backline, frontline, subline) = utils.find_line(ship_dict)
 
     # Sort by selected stat
@@ -114,12 +116,33 @@ def clear_boxes(front_list, back_list, sub_list, preset_list):
     global preset_ships
     preset_ships = []
     preset_list.clear()
-    # TODO fix this to clear the widgets
-    print("TODO: fix to clear other lines")
+    front_list.clear_line()
+    back_list.clear_line()
+    sub_list.clear_line()
 
 def main():
     app = QApplication([])
-    window = QWidget()
+    window = QMainWindow()
+
+    window.statusbar = window.statusBar()
+    window.statusbar.showMessage('Ready')
+
+    menubar = window.menuBar()
+    FileMenu = menubar.addMenu('File')
+
+    wikiAct = QAction('Update Stats from Wiki', window)
+    wikiAct.setStatusTip('Update Wiki Stats')
+    FileMenu.addAction(wikiAct)
+
+    newShipAct = QAction('Add new ships to database', window)
+    newShipAct.setStatusTip('Add new ship')
+    FileMenu.addAction(newShipAct)
+
+    quitAct = QAction('Quit', window)
+    quitAct.setStatusTip('Quit')
+    FileMenu.addAction(quitAct)
+
+    base_window = QWidget()
     layout = QVBoxLayout() # Vertical box layout
     total = QHBoxLayout() # Horizontal box layout
     front = QHBoxLayout() # Horizontal box layout
@@ -132,9 +155,7 @@ def main():
     # Set button labels
     button1 = QPushButton('Import Ships')
     button2 = QPushButton('Sort Ships')
-    button3 = QPushButton('Add new ships to database')
-    button4 = QPushButton('Update stats from AL wiki')
-    button5 = QPushButton('Clear Lines')
+    button3 = QPushButton('Clear Lines')
 
     # Set labels for list widgets
     label_total = QLabel('All Ships')
@@ -164,29 +185,25 @@ def main():
     RemovePreset.clicked.connect(lambda:remove_preset(preset_list_widget))
 
     # Set up the line widgets
-    front_list_widget = UILineWidget()
-    front_list_widget.set_label('Frontline')
-    back_list_widget = UILineWidget()
-    back_list_widget.set_label('Backline')
-    sub_list_widget = UILineWidget()
-    sub_list_widget.set_label('Subline')
+    front_list_widget = UILineWidget('Frontline')
+    back_list_widget = UILineWidget('Backline')
+    sub_list_widget = UILineWidget('Subline')
     back.addWidget(back_list_widget)
     front.addWidget(front_list_widget)
     sub.addWidget(sub_list_widget)
  
 
     # Connect buttons to functions
+    #button1.triggered.connect(lambda:load_ships(total_list_widget))
     button1.clicked.connect(lambda:load_ships(total_list_widget))
-    button2.clicked.connect(lambda:sort_ships(front_list_widget, back_list_widget, sub_list_widget))
-    button4.clicked.connect(lambda:scrape_wiki(checkbox1))
-    button5.clicked.connect(lambda:clear_boxes(front_list_widget, back_list_widget, sub_list_widget, preset_list_widget))
+    button2.clicked.connect(lambda:sort_ships(front_list_widget, back_list_widget, sub_list_widget, preset_list_widget))
+    wikiAct.triggered.connect(lambda:scrape_wiki(checkbox1))
+    button3.clicked.connect(lambda:clear_boxes(front_list_widget, back_list_widget, sub_list_widget, preset_list_widget))
 
     # Add menu buttons
     layout.addWidget(button1)
     layout.addWidget(button2)
     layout.addWidget(button3)
-    layout.addWidget(button4)
-    layout.addWidget(button5)
     layout.addWidget(checkbox1)
 
     # Add list widgets and labels to respective layouts
@@ -196,9 +213,12 @@ def main():
     layout.addLayout(front)
     layout.addLayout(sub)
 
-    window.setLayout(layout)
-    window.show()
+    base_window.setLayout(layout)
+
+    window.setCentralWidget(base_window)
     window.setWindowTitle("Azur Lane Sorter")
+    window.setWindowIcon(QIcon("icon.jpg"))
+    window.show()
 
     app.exec_()
 if __name__ == '__main__':
