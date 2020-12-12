@@ -2,6 +2,7 @@ from PyQt5.QtWidgets import *
 from PyQt5.QtGui import QIcon
 import data_scrape, utils
 from UILineWidget import UILineWidget
+from UIAddShip import UIAddShip
 
 import threading
 
@@ -120,9 +121,16 @@ def clear_boxes(front_list, back_list, sub_list, preset_list):
     back_list.clear_line()
     sub_list.clear_line()
 
+def add_ship():
+    global dialog
+    dialog.show()
+
 def main():
     app = QApplication([])
     window = QMainWindow()
+
+    global dialog
+    dialog = UIAddShip()
 
     window.statusbar = window.statusBar()
     window.statusbar.showMessage('Ready')
@@ -173,7 +181,9 @@ def main():
 
     # Create Preset/Total Layout
     total_list_widget = QListWidget()
+    total_list_widget.setSortingEnabled(True)
     preset_list_widget = QListWidget()
+    preset_list_widget.setSortingEnabled(True)
     list_layout = QHBoxLayout()
     list_layout.addWidget(total_list_widget)
     list_layout.addLayout(preset_layout)
@@ -198,6 +208,7 @@ def main():
     button1.clicked.connect(lambda:load_ships(total_list_widget))
     button2.clicked.connect(lambda:sort_ships(front_list_widget, back_list_widget, sub_list_widget, preset_list_widget))
     wikiAct.triggered.connect(lambda:scrape_wiki(checkbox1))
+    newShipAct.triggered.connect(lambda:add_ship())
     button3.clicked.connect(lambda:clear_boxes(front_list_widget, back_list_widget, sub_list_widget, preset_list_widget))
 
     # Add menu buttons
