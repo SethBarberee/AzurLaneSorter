@@ -8,7 +8,7 @@ class UIAddShip(QDialog):
         self.setModal(True)
         self.dialog_layout = QFormLayout() # Vertical box layout
 
-        for item in ["ID", "Name", "Rarity", "Nation" "Class"]:
+        for item in ["ID", "Name", "Rarity", "Nation", "Class"]:
             label = QLabel(item)
             label_test= QLineEdit()
             self.dialog_layout.addRow(label, label_test)
@@ -21,7 +21,8 @@ class UIAddShip(QDialog):
         save_button = QPushButton("Save")
         quit_button = QPushButton("Quit")
         save_button.clicked.connect(lambda:self.get_data())
-        self.dialog_layout.addRow(save_button, quit_button)
+        quit_button.clicked.connect(lambda:self.close_dialog())
+        self.dialog_layout.addRow(quit_button, save_button)
         self.setLayout(self.dialog_layout)
         self.setWindowTitle("Azur Lane Sorter")
         self.setWindowIcon(QIcon("icon.jpg"))
@@ -30,5 +31,6 @@ class UIAddShip(QDialog):
         for item in range(num):
             # TODO get data from each row
             print(self.dialog_layout.itemAt(item))
-
+    def close_dialog(self):
+        self.reject()
 

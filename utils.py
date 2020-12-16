@@ -44,6 +44,9 @@ valid_stats = [
             "Accuracy",
             ]
 
+valid_armor = ['Heavy', 'Medium', 'Light' ]
+
+
 def parse_data(filename='data.json'):
     """ Pass in a JSON file of ships and return a python dictionary """
 
@@ -58,14 +61,11 @@ def find_line(ships_dict):
     backline = []
     frontline = []
     subline = []
-    # These are the classes that go in the backline
-    backline_set = {'BB', 'BC', 'CV', 'CVL', 'AR', 'BM'}
-    subline_set = {'SS', 'AM'}
     for ship in ships_dict:
-        if ship['Class'] in backline_set:
+        if ship['Class'] in valid_class["Backline"]:
             # Matches one of the classes so add it
             backline.append(ship)
-        elif ship['Class'] in subline_set:
+        elif ship['Class'] in valid_class["Subline"]:
             # Found a submarine
             subline.append(ship)
         else:
@@ -84,9 +84,7 @@ def sort_ships(ships_dict, stat='HP'):
         stat = "HP"
 
     if stat == 'Armor':
-        # Armor only has three values
-        keyorder = ['Heavy', 'Medium', 'Light' ]
-        order = {key: i for i, key in enumerate(keyorder)}
+        order = {key: i for i, key in enumerate(valid_armor)}
         sorted_ship_dict = sorted(ships_dict, key = lambda d: order[d[stat]])
     else:
         sorted_ship_dict = sorted(ships_dict, key = lambda d: d[stat], reverse=True)
@@ -229,12 +227,32 @@ def filter_ships(ships_dict, filter_name="Nation"):
             new_ship_dict.append(ship)
     return new_ship_dict
 
+
 # TODO merge with normal filter
-def filter_ships_ui(ships_dict, filter_name="Nation", filter_value="Eagle Union"):
+def filter_ships_ui(ships_dict, filters):
     """ Filter the ship dictionary based on Nation or Rarity """
     new_ship_dict = []
-    print("Filtering by " + filter_value)
-    for ship in ships_dict:
-        if(ship[filter_name] == filter_value):
-            new_ship_dict.append(ship)
+    # Structure of filters
+    #    0        |         1
+    #   Name      |    Conditional
+
+    # check if one dictionary is empty
+    if( not filters[0]):
+        return ships_dict
+
+    print(filters[0])
+    print(filters[1])
+    for i in filters[0].keys():
+        if(filters[1][i] == '='):
+            for ship in ships_dict:
+                if(ship[i] == filters[0][i]):
+                    new_ship_dict.append(ship)
+        elif(filters[1][i] == '!='):
+            for ship in ships_dict:
+                if(ship[i] != filters[0][i]):
+                    new_ship_dict.append(ship)
+        else:
+            print("TODO: implement filter of " + filters[1][i])
+            return ships_dict
+
     return new_ship_dict

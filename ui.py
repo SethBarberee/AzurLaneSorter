@@ -67,7 +67,7 @@ def load_ships(list_widget):
 def sort_ships(front_list, back_list, sub_list, preset_list):
     global ship_dict
     # Filter by line
-    clear_boxes(front_list, back_list, sub_list, preset_list)
+    clear_boxes(front_list, back_list, sub_list, preset_list, False)
     (backline, frontline, subline) = utils.find_line(ship_dict)
 
     # Sort by selected stat
@@ -82,12 +82,9 @@ def sort_ships(front_list, back_list, sub_list, preset_list):
     sub_filters = sub_list.FilterList.get_filters()
 
     # loop through filters and apply filters
-    for i in back_filters.keys():
-        backline = utils.filter_ships_ui(backline, i, back_filters[i])
-    for i in front_filters.keys():
-        frontline = utils.filter_ships_ui(frontline, i, front_filters[i])
-    for i in sub_filters.keys():
-        subline = utils.filter_ships_ui(subline, i, sub_filters[i])
+    backline = utils.filter_ships_ui(backline, back_filters)
+    frontline = utils.filter_ships_ui(frontline, front_filters)
+    subline = utils.filter_ships_ui(subline, sub_filters)
 
     # Create the lists
     (back, front, oil, sub, suboil) = utils.create_line(backline, frontline, subline, preset_ships, True)
@@ -113,10 +110,11 @@ def sort_ships(front_list, back_list, sub_list, preset_list):
     t2.join()
     t3.join()
 
-def clear_boxes(front_list, back_list, sub_list, preset_list):
+def clear_boxes(front_list, back_list, sub_list, preset_list, clear_preset):
     global preset_ships
-    preset_ships = []
-    preset_list.clear()
+    if(clear_preset):
+        preset_ships = []
+        preset_list.clear()
     front_list.clear_line()
     back_list.clear_line()
     sub_list.clear_line()
@@ -124,6 +122,9 @@ def clear_boxes(front_list, back_list, sub_list, preset_list):
 def add_ship():
     global dialog
     dialog.show()
+
+def close_window(window):
+    window.close()
 
 def main():
     app = QApplication([])
@@ -208,8 +209,9 @@ def main():
     button1.clicked.connect(lambda:load_ships(total_list_widget))
     button2.clicked.connect(lambda:sort_ships(front_list_widget, back_list_widget, sub_list_widget, preset_list_widget))
     wikiAct.triggered.connect(lambda:scrape_wiki(checkbox1))
+    quitAct.triggered.connect(lambda:close_window(window))
     newShipAct.triggered.connect(lambda:add_ship())
-    button3.clicked.connect(lambda:clear_boxes(front_list_widget, back_list_widget, sub_list_widget, preset_list_widget))
+    button3.clicked.connect(lambda:clear_boxes(front_list_widget, back_list_widget, sub_list_widget, preset_list_widget, True))
 
     # Add menu buttons
     layout.addWidget(button1)

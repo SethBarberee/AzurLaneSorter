@@ -49,15 +49,20 @@ class UIFilterList(QWidget):
     def get_filters(self):
         # return a list/dictionary of filters
         current_filters = {}
+        filter_conditional = {}
         for check in self.findChildren(QCheckBox):
             if(check.isChecked()):
                 # get combo box part of checkbox
                 checkbox = check.text()
                 if checkbox == "Rarity":
                     selected_item = self.rarity_enter.currentText()
+                    cond_check = self.rarity_cond.currentText()
                 elif checkbox ==  "Nation":
                     selected_item = self.nation_enter.currentText()
+                    cond_check = self.nation_cond.currentText()
                 else:
                     selected_item = self.class_enter.currentText()
+                    cond_check = self.class_cond.currentText()
                 current_filters[check.text()] = selected_item
-        return current_filters
+                filter_conditional[check.text()] = cond_check
+        return current_filters, filter_conditional
