@@ -86,6 +86,8 @@ def sort_ships(ships_dict, stat='HP'):
     if stat == 'Armor':
         order = {key: i for i, key in enumerate(valid_armor)}
         sorted_ship_dict = sorted(ships_dict, key = lambda d: order[d[stat]])
+    elif stat == 'Cost':
+        sorted_ship_dict = sorted(ships_dict, key = lambda d: d[stat])
     else:
         sorted_ship_dict = sorted(ships_dict, key = lambda d: d[stat], reverse=True)
     return sorted_ship_dict
@@ -229,30 +231,23 @@ def filter_ships(ships_dict, filter_name="Nation"):
 
 
 # TODO merge with normal filter
-def filter_ships_ui(ships_dict, filters):
+def filter_ships_ui(ships_dict, name_filter, filters):
     """ Filter the ship dictionary based on Nation or Rarity """
     new_ship_dict = []
     # Structure of filters
     #    0        |         1
     #   Name      |    Conditional
 
-    # check if one dictionary is empty
-    if( not filters[0]):
+    if(filters[1][name_filter] == '='):
+        for ship in ships_dict:
+            if(ship[name_filter] == filters[0][name_filter]):
+                new_ship_dict.append(ship)
+    elif(filters[1][name_filter] == '!='):
+        for ship in ships_dict:
+            if(ship[name_filter] != filters[0][name_filter]):
+                new_ship_dict.append(ship)
+    else:
+        print("TODO: implement filter of " + filters[1][i])
         return ships_dict
-
-    print(filters[0])
-    print(filters[1])
-    for i in filters[0].keys():
-        if(filters[1][i] == '='):
-            for ship in ships_dict:
-                if(ship[i] == filters[0][i]):
-                    new_ship_dict.append(ship)
-        elif(filters[1][i] == '!='):
-            for ship in ships_dict:
-                if(ship[i] != filters[0][i]):
-                    new_ship_dict.append(ship)
-        else:
-            print("TODO: implement filter of " + filters[1][i])
-            return ships_dict
 
     return new_ship_dict

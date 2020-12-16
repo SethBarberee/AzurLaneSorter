@@ -82,28 +82,27 @@ def sort_ships(front_list, back_list, sub_list, preset_list):
     sub_filters = sub_list.FilterList.get_filters()
 
     # loop through filters and apply filters
-    backline = utils.filter_ships_ui(backline, back_filters)
-    frontline = utils.filter_ships_ui(frontline, front_filters)
-    subline = utils.filter_ships_ui(subline, sub_filters)
+    for i in back_filters[0].keys():
+        backline = utils.filter_ships_ui(backline, i, back_filters)
+    for i in front_filters[0].keys():
+        frontline = utils.filter_ships_ui(frontline, i, front_filters)
+    for i in sub_filters[0].keys():
+        subline = utils.filter_ships_ui(subline, i, sub_filters)
 
     # Create the lists
     (back, front, oil, sub, suboil) = utils.create_line(backline, frontline, subline, preset_ships, True)
 
     # Add names to the list
-    # TODO I could probably parallelize appending the names/images to respective lists
     (back_images, back_names) = prepare_for_update(back)
-    # dispatch thread to update backline
     t1 = threading.Thread(target=back_list.update_pics, args=(back_images,back_names)) 
-    t1.start()
 
     (front_images, front_names) = prepare_for_update(front)
-    # dispatch thread to update frontline
     t2 = threading.Thread(target=front_list.update_pics, args=(front_images,front_names)) 
-    t2.start()
 
     (sub_images, sub_names) = prepare_for_update(sub)
-    # dispatch thread to update subline
     t3 = threading.Thread(target=sub_list.update_pics, args=(sub_images,sub_names)) 
+    t1.start()
+    t2.start()
     t3.start()
 
     t1.join()
