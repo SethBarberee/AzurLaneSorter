@@ -3,6 +3,7 @@ import requests, json
 from bs4 import BeautifulSoup
 
 ships_dict = []
+azur_wiki_url = "https://azurlane.koumakan.jp/List_of_Ships_by_Stats"
 
 def source_ships(name='include.txt'):
     """ Source our list of ships that we do have in the dock """
@@ -16,7 +17,7 @@ def source_ships(name='include.txt'):
 def scrape(desired_level=100, select_all=False):
     """ Scrape the AL Wiki either fully or with our local list """
     include_list = []
-    page = requests.get("https://azurlane.koumakan.jp/List_of_Ships_by_Stats")
+    page = requests.get(azur_wiki_url)
     soup = BeautifulSoup(page.content, 'html.parser')
 
     title_string = "Level " + str(desired_level)
@@ -144,7 +145,7 @@ def scrape(desired_level=100, select_all=False):
                 # Add to the dictionary
                 ships_dict.append(new_ship)
     # All ready to export to JSON
-    with open("data_export.json", "w+") as write_file:
+    with open("data_export.json", "w") as write_file:
         # Dump the data in a nice fashion
         json.dump(ships_dict, write_file, indent = 4, separators=(',',': '))
     return

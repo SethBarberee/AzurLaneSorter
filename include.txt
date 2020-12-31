@@ -20,13 +20,16 @@ Illustrious
 Chapayev
 Albacore
 I-58
-Tashkent
-Guilio Cesare
-Pamait' Merkuria
 U-47
 U-556
 U-73
+I-19
+I-26
 Surcouf
+U-37
+Tashkent
+Guilio Cesare
+Pamait' Merkuria
 Ranger (Retrofit)
 Tirpitz
 Fortune (Retrofit)
@@ -129,3 +132,5 @@ Cassin
 Craven
 Cygnet
 Minneapolis
+Prinz Heinrich
+Kashino

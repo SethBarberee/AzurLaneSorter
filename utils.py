@@ -19,8 +19,8 @@ global valid_class
 global valid_stats
 
 # Useful lists for filtering and data validation
-valid_nations = ['Eagle Union', 'Royal Navy', 'Ironblood', 'Sakura Empire', 'Dragon Empery', 'Sardegna Empire', 'North Union', 'Iris Libre', 'Vichya Dominion']
-valid_rarity =  ['Common', 'Rare', 'Elite', 'Super Rare', 'Ultra']
+valid_nations = ['Eagle Union', 'Royal Navy', 'Iron Blood', 'Sakura Empire', 'Dragon Empery', 'Sardegna Empire', 'Northern Parliament', 'Iris Libre', 'Vichya Dominion']
+valid_rarity =  ['Common', 'Rare', 'Elite', 'Priority', 'Super Rare', 'Decisive', 'Ultra Rare']
 valid_class = {
         "Backline": ['BB', 'BC', 'BM', 'CV', 'CVL', 'AR'],
         "Frontline": ['CL', 'CA', 'CB', 'DD'],
