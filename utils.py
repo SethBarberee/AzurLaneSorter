@@ -22,9 +22,9 @@ global valid_stats
 valid_nations = ['Eagle Union', 'Royal Navy', 'Iron Blood', 'Sakura Empire', 'Dragon Empery', 'Sardegna Empire', 'Northern Parliament', 'Iris Libre', 'Vichya Dominion', 'Hololive', 'Neptunia', 'Bilibili', 'KizunaAI', 'Utawarerumono', 'Universal', 'Venus Vacation']
 valid_rarity =  ['Common', 'Rare', 'Elite', 'Priority', 'Super Rare', 'Decisive', 'Ultra Rare']
 valid_class = {
-        "Backline": ['BB', 'BC', 'BM', 'CV', 'CVL', 'AR'],
+        "Backline": ['BB', 'BC', 'BM', 'CV', 'CVL', 'AR', 'AE'],
         "Frontline": ['CL', 'CA', 'CB', 'DD'],
-        "Subline": ['SS', 'AM'],
+        "Subline": ['SS', 'AM', 'SSV'],
 }
 valid_stats = [
             "HP",
