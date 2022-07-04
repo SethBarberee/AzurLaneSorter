@@ -224,6 +224,7 @@ def main():
     layout.addLayout(back)
     layout.addLayout(front)
     layout.addLayout(sub)
+    layout.addStretch(0)
 
     base_window.setLayout(layout)
 

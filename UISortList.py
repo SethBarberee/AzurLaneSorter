@@ -1,19 +1,23 @@
 from PyQt5.QtWidgets import *
-
+from PyQt5.QtCore import Qt
+import math
 import utils
 
 class UISortList(QWidget):
     def __init__(self, parent = None):
         QWidget.__init__(self, parent=parent)
-        layout = QGridLayout(self)
 
-        divider = len(utils.valid_stats) / 3 # Split into three columns
-        # Loop through all the valid stats and add a radio button
-        for i in range(len(utils.valid_stats)):
-            row = i % divider # figure out the row
-            col = i / divider # figure out the column
-            self.new_button = QRadioButton(utils.valid_stats[i])
-            layout.addWidget(self.new_button, row, col)
+        layout = QVBoxLayout(self)
+        num_rows = 3
+
+        numItemsInColumn = math.floor(len(utils.valid_stats) / num_rows)
+
+
+        for row in range(num_rows):
+            nestLayout = QHBoxLayout()
+            for col in range(numItemsInColumn):
+                nestLayout.addWidget(QRadioButton(utils.valid_stats[row + col]))
+            layout.addLayout(nestLayout)
         # Set first one as default
         self.findChildren(QRadioButton)[0].setChecked(True)
 
