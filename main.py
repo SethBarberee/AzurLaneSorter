@@ -30,13 +30,13 @@ def new_ship_data(ships_dict):
     try:
         # Check Rarity input
         rarity = input("Rarity: ")
-        valid_rarity.index(rarity)
+        utils.valid_rarity.index(rarity)
     except:
         rarity = "Common" # We'll set Common as default
     try:
         # Check Nation input
         nation = input("Nation: ")
-        valid_nations.index(nation)
+        utils.valid_nations.index(nation)
     except:
         nation = "Other"
     clas = input("Class: ")
