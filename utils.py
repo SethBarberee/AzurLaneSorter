@@ -247,7 +247,7 @@ def filter_ships_ui(ships_dict, name_filter, filters):
             if(ship[name_filter] != filters[0][name_filter]):
                 new_ship_dict.append(ship)
     else:
-        print("TODO: implement filter of " + filters[1][i])
+        print("TODO: implement filter of " + filters[1][name_filter])
         return ships_dict
 
     return new_ship_dict
