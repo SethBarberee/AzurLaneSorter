@@ -1,17 +1,20 @@
-import requests, json
+import requests
+import json
 
 from bs4 import BeautifulSoup
 
 ships_dict = []
-azur_wiki_url = "https://azurlane.koumakan.jp/List_of_Ships_by_Stats"
+azur_wiki_url = "https://azurlane.koumakan.jp/wiki/List_of_Ships_by_Stats"
+
 
 def source_ships(name='include.txt'):
     """ Source our list of ships that we do have in the dock """
     include_list = []
     include_file = open(name, "r")
-    for l in include_file.readlines():
-        include_list.append(l.rstrip())
+    for line in include_file.readlines():
+        include_list.append(line.rstrip())
     return include_list
+
 
 # There are three tabs that we can select Level 1, 100, and 120
 def scrape(desired_level=100, select_all=False):
@@ -21,13 +24,13 @@ def scrape(desired_level=100, select_all=False):
     soup = BeautifulSoup(page.content, 'html.parser')
 
     title_string = "Level " + str(desired_level)
-    if(select_all == False): # if we want to use our local list
+    if (select_all is False):  # if we want to use our local list
         include_list = source_ships()
 
         # Select the Level 120 tab of each table
-        for i in range(0, len(soup.find_all('div', title = title_string))): # Title
+        for i in range(0, len(soup.find_all('div', title=title_string))): # Title
             # Select the Level 120 tab of each table
-            table = soup.find_all('div', title = title_string)[i] # Title
+            table = soup.find_all('div', title=title_string)[i] # Title
 
             # Iterate in groups of 20 (since that's one row)
             for x in range(0, len(table.find_all('td')), 20):
@@ -56,7 +59,7 @@ def scrape(desired_level=100, select_all=False):
                     ammo = table.find_all('td')[x + 18].get_text() # Title
                     acc = table.find_all('td')[x + 19].get_text() # Title
                     name_image = name.replace(" (Retrofit)", "Kai")
-                    image = "https://azurlane.koumakan.jp/File:" + name_image.replace(" ", "_") + "Icon.png"
+                    image = "https://azurlane.koumakan.jp/wiki/File:" + name_image.replace(" ", "_") + "Icon.png"
 
                     # Export to JSON
                     new_ship = {
@@ -89,9 +92,9 @@ def scrape(desired_level=100, select_all=False):
                     continue
     else:
         # Select the Level 120 tab of each table
-        for i in range(0, len(soup.find_all('div', title = title_string))): # Title
+        for i in range(0, len(soup.find_all('div', title=title_string))): # Title
             # Select the Level 120 tab of each table
-            table = soup.find_all('div', title = title_string)[i] # Title
+            table = soup.find_all('div', title=title_string)[i] # Title
 
             # Iterate in groups of 20 (since that's one row)
             for x in range(0, len(table.find_all('td')), 20):
@@ -147,5 +150,5 @@ def scrape(desired_level=100, select_all=False):
     # All ready to export to JSON
     with open("data_export.json", "w") as write_file:
         # Dump the data in a nice fashion
-        json.dump(ships_dict, write_file, indent = 4, separators=(',',': '))
+        json.dump(ships_dict, write_file, indent=4, separators=(',', ': '))
     return

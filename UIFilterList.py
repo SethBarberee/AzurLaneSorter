@@ -1,9 +1,10 @@
-from PyQt5.QtWidgets import *
+from PyQt6.QtWidgets import QWidget, QCheckBox, QHBoxLayout, QComboBox, QVBoxLayout
 
 import utils
 
+
 class UIFilterList(QWidget):
-    def __init__(self, label, parent = None):
+    def __init__(self, label, parent=None):
         QWidget.__init__(self, parent=parent)
         self.rarity_layout = QHBoxLayout()
         self.rarity = QCheckBox("Rarity")
@@ -51,13 +52,13 @@ class UIFilterList(QWidget):
         current_filters = {}
         filter_conditional = {}
         for check in self.findChildren(QCheckBox):
-            if(check.isChecked()):
+            if (check.isChecked()):
                 # get combo box part of checkbox
                 checkbox = check.text()
                 if checkbox == "Rarity":
                     selected_item = self.rarity_enter.currentText()
                     cond_check = self.rarity_cond.currentText()
-                elif checkbox ==  "Nation":
+                elif checkbox == "Nation":
                     selected_item = self.nation_enter.currentText()
                     cond_check = self.nation_cond.currentText()
                 else:

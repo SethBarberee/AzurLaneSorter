@@ -1,17 +1,16 @@
-from PyQt5.QtWidgets import *
-from PyQt5.QtCore import Qt
+from PyQt6.QtWidgets import QWidget, QVBoxLayout, QHBoxLayout, QRadioButton
 import math
 import utils
 
+
 class UISortList(QWidget):
-    def __init__(self, parent = None):
+    def __init__(self, parent=None):
         QWidget.__init__(self, parent=parent)
 
         layout = QVBoxLayout(self)
         num_rows = 3
 
         numItemsInColumn = math.floor(len(utils.valid_stats) / num_rows)
-
 
         for row in range(num_rows):
             nestLayout = QHBoxLayout()

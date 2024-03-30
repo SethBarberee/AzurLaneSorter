@@ -1,14 +1,17 @@
-from PyQt5.QtWidgets import *
-from PyQt5.QtGui import QIcon
-import data_scrape, utils
+from PyQt6.QtWidgets import *
+from PyQt6.QtGui import QAction, QIcon
+import data_scrape
+import utils
 from UILineWidget import UILineWidget
 from UIAddShip import UIAddShip
 
 import threading
+import sys
 
 ship_dict = {} # global dictionary for all the ships
 
 preset_ships = []
+
 
 def add_preset(total_list_widget, preset_list_widget):
     global preset_ships
@@ -18,12 +21,13 @@ def add_preset(total_list_widget, preset_list_widget):
             try:
                 # Check if we have it in our list yet
                 preset_ships.index(ship)
-            except:
+            except ValueError:
                 # we know it's not so add it now
                 if ship["Name"] == item.text():
-                    preset_ships.append(ship) 
+                    preset_ships.append(ship)
                     preset_list_widget.addItem(item.text())
                     break
+
 
 def remove_preset(preset_list_widget):
     global preset_ships
@@ -34,6 +38,7 @@ def remove_preset(preset_list_widget):
                 preset_ships.remove(ship)
                 break
 
+
 # Take the line and prepare the image link and Name
 def prepare_for_update(line):
     images = []
@@ -43,15 +48,17 @@ def prepare_for_update(line):
         names.append(line[i]['Name'])
     return (images, names)
 
+
 def scrape_wiki(checkbox):
     # check whether we need to import only the list or all of them
-    if checkbox.isChecked() == True:
-        data_scrape.scrape(100, True) # Set to True when we went them all
+    if checkbox.isChecked() is True:
+        data_scrape.scrape(100, True)  # Set to True when we went them all
     else:
-        data_scrape.scrape(100, False) # Set to True when we went them all
+        data_scrape.scrape(100, False)  # Set to True when we went them all
     alert = QMessageBox()
     alert.setText('Stats have been updated in data_export.json')
-    alert.exec_()
+    alert.exec()
+
 
 def load_ships(list_widget):
     global ship_dict
@@ -62,7 +69,8 @@ def load_ships(list_widget):
         list_widget.addItem(item['Name'])
     alert = QMessageBox()
     alert.setText('Ships have been loaded from data.json')
-    alert.exec_()
+    alert.exec()
+
 
 def sort_ships(front_list, back_list, sub_list, preset_list):
     global ship_dict
@@ -94,13 +102,13 @@ def sort_ships(front_list, back_list, sub_list, preset_list):
 
     # Add names to the list
     (back_images, back_names) = prepare_for_update(back)
-    t1 = threading.Thread(target=back_list.update_pics, args=(back_images,back_names)) 
+    t1 = threading.Thread(target=back_list.update_pics, args=(back_images, back_names))
 
     (front_images, front_names) = prepare_for_update(front)
-    t2 = threading.Thread(target=front_list.update_pics, args=(front_images,front_names)) 
+    t2 = threading.Thread(target=front_list.update_pics, args=(front_images, front_names))
 
     (sub_images, sub_names) = prepare_for_update(sub)
-    t3 = threading.Thread(target=sub_list.update_pics, args=(sub_images,sub_names)) 
+    t3 = threading.Thread(target=sub_list.update_pics, args=(sub_images, sub_names))
     t1.start()
     t2.start()
     t3.start()
@@ -109,24 +117,28 @@ def sort_ships(front_list, back_list, sub_list, preset_list):
     t2.join()
     t3.join()
 
+
 def clear_boxes(front_list, back_list, sub_list, preset_list, clear_preset):
     global preset_ships
-    if(clear_preset):
+    if (clear_preset):
         preset_ships = []
         preset_list.clear()
     front_list.clear_line()
     back_list.clear_line()
     sub_list.clear_line()
 
+
 def add_ship():
     global dialog
     dialog.show()
 
+
 def close_window(window):
     window.close()
 
+
 def main():
-    app = QApplication([])
+    app = QApplication(sys.argv)
     window = QMainWindow()
 
     global dialog
@@ -191,8 +203,8 @@ def main():
     list_layout.addWidget(label_preset)
     total.addWidget(label_total)
     total.addLayout(list_layout)
-    AddPreset.clicked.connect(lambda:add_preset(total_list_widget, preset_list_widget))
-    RemovePreset.clicked.connect(lambda:remove_preset(preset_list_widget))
+    AddPreset.clicked.connect(lambda: add_preset(total_list_widget, preset_list_widget))
+    RemovePreset.clicked.connect(lambda: remove_preset(preset_list_widget))
 
     # Set up the line widgets
     front_list_widget = UILineWidget('Frontline')
@@ -202,15 +214,14 @@ def main():
     front.addWidget(front_list_widget)
     sub.addWidget(sub_list_widget)
  
-
     # Connect buttons to functions
-    #button1.triggered.connect(lambda:load_ships(total_list_widget))
-    button1.clicked.connect(lambda:load_ships(total_list_widget))
-    button2.clicked.connect(lambda:sort_ships(front_list_widget, back_list_widget, sub_list_widget, preset_list_widget))
-    wikiAct.triggered.connect(lambda:scrape_wiki(checkbox1))
-    quitAct.triggered.connect(lambda:close_window(window))
-    newShipAct.triggered.connect(lambda:add_ship())
-    button3.clicked.connect(lambda:clear_boxes(front_list_widget, back_list_widget, sub_list_widget, preset_list_widget, True))
+    # button1.triggered.connect(lambda:load_ships(total_list_widget))
+    button1.clicked.connect(lambda: load_ships(total_list_widget))
+    button2.clicked.connect(lambda: sort_ships(front_list_widget, back_list_widget, sub_list_widget, preset_list_widget))
+    wikiAct.triggered.connect(lambda: scrape_wiki(checkbox1))
+    quitAct.triggered.connect(lambda: close_window(window))
+    newShipAct.triggered.connect(lambda: add_ship())
+    button3.clicked.connect(lambda: clear_boxes(front_list_widget, back_list_widget, sub_list_widget, preset_list_widget, True))
 
     # Add menu buttons
     layout.addWidget(button1)
@@ -233,6 +244,7 @@ def main():
     window.setWindowIcon(QIcon("icon.jpg"))
     window.show()
 
-    app.exec_()
+    app.exec()
+
 if __name__ == '__main__':
     main()

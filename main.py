@@ -1,9 +1,13 @@
-import json, sys, os, copy # global
+import json
+import sys
+import os
 
-import utils, data_scrape #local
+import utils
+import data_scrape
 
-ship_dict = [] # global dictionary for all the ships
-menu_actions = {} # blank definition here but we fill it at the bottom of the file
+ship_dict = []  # global dictionary for all the ships
+menu_actions = {}  # blank definition here but we fill it at the bottom of the file
+
 
 # Execute menu
 def exec_menu(choice):
@@ -19,8 +23,10 @@ def exec_menu(choice):
             menu_actions['main']()
     return
 
+
 def exit():
     sys.exit()
+
 
 def new_ship_data(ships_dict):
     """ Add a new ship dictionary and return the updated list"""
@@ -31,13 +37,13 @@ def new_ship_data(ships_dict):
         # Check Rarity input
         rarity = input("Rarity: ")
         utils.valid_rarity.index(rarity)
-    except:
+    except ValueError:
         rarity = "Common" # We'll set Common as default
     try:
         # Check Nation input
         nation = input("Nation: ")
         utils.valid_nations.index(nation)
-    except:
+    except ValueError:
         nation = "Other"
     clas = input("Class: ")
     luck = int(input("Luck: "))
@@ -52,7 +58,7 @@ def new_ship_data(ships_dict):
     cost = int(input("Cost: "))
     reloa = int(input("Reload: "))
     anti_sub = int(input("Anti-Sub: "))
-    oxygen  = int(input("Oxygen: "))
+    oxygen = int(input("Oxygen: "))
     ammo = int(input("Ammunition: "))
     acc = int(input("Accuracy: "))
     name_image = name.replace(" (Retrofit)", "Kai")
@@ -88,15 +94,16 @@ def new_ship_data(ships_dict):
     # TODO find a way to let user change this
     with open("data_export.json", "w+") as write_file:
         # Dump the data in a nice fashion
-        json.dump(ships_dict, write_file, indent = 4, separators=(',',': '))
+        json.dump(ships_dict, write_file, indent=4, separators=(',', ': '))
     return ships_dict
+
 
 def filter_menu(ship_dict_old):
     """ Menu for filtering ships given a dictionary """
     test = "Y"
     while (test == 'Y'):
         filter_choice = input('Filter by (Nation, Rarity, Class, N/A): ')
-        if(filter_choice == 'N/A' or filter_choice == ""):
+        if (filter_choice == 'N/A' or filter_choice == ""):
             # Set the new equal to the old
             ship_dict_new = ship_dict_old
             return ship_dict_new
@@ -107,6 +114,7 @@ def filter_menu(ship_dict_old):
             test = input('Would you like to filter again? (Y/N): ')
     return ship_dict_new
 
+
 def menu1():
     """ Menu that will import the ship data """
     # Declare we are using the global to add the JSON data to it
@@ -114,7 +122,8 @@ def menu1():
     (ship_dict) = utils.parse_data()
     choice = input("Enter 0 to exit or main for main menu: ")
     exec_menu(choice)
-    return 
+    return
+
 
 def menu2():
     """ Menu that sorts our data however we like to our top 3 for front and back"""
@@ -136,8 +145,8 @@ def menu2():
     print("Sorting by " + stat)
     new_subline = utils.sort_ships(subline, stat)
     new_subline = filter_menu(new_subline)
- 
-    if new_backline == None or new_frontline == None:
+
+    if new_backline is None or new_frontline is None:
         print("Empty line")
         # TODO maybe a delay
         menu_actions['main']()
@@ -147,14 +156,13 @@ def menu2():
     test = "Y"
     while (test == 'Y'):
         name_choice = input('Name of Ship to add by default to line: ')
-        if(name_choice == 'N/A' or name_choice == ""):
+        if (name_choice == 'N/A' or name_choice == ""):
             break
         else:
-            # TODO I can do index here, right?
             for ship in ship_dict:
                 # check for the name
                 if ship["Name"] == name_choice:
-                    preset_names.append(ship) 
+                    preset_names.append(ship)
                     break
             test = input('Would you like to add another? (Y/N): ')
 
@@ -163,7 +171,8 @@ def menu2():
 
     choice = input("Enter 0 to exit or main for main menu: ")
     exec_menu(choice)
-    return 
+    return
+
 
 def menu3():
     # Declare we are using the global so we can add the new ship to it
@@ -174,6 +183,7 @@ def menu3():
     exec_menu(choice)
     return
 
+
 def menu4():
     # This will scrape the AL Wiki and update the data_export file
     data_scrape.scrape(100, False)
@@ -181,6 +191,7 @@ def menu4():
     choice = input("Enter 0 to exit or main for main menu: ")
     exec_menu(choice)
     return
+
 
 def main():
     os.system('clear')
@@ -193,6 +204,7 @@ def main():
     print("0. Quit")
     choice = input(" >>  ")
     exec_menu(choice)
+
 
 # Dictionary of each menu
 # Each choice is a function that is called
@@ -207,4 +219,3 @@ menu_actions = {
 
 if __name__ == "__main__":
     main()
-

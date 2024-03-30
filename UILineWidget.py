@@ -1,17 +1,14 @@
-from PyQt5.QtWidgets import *
+from PyQt6.QtWidgets import QWidget, QHBoxLayout, QLabel
 
-import os.path
-from os import path
-
-import utils
 from UIShipWidget import UIShipWidget
 from UIFilterList import UIFilterList
 from UISortList import UISortList
 
 import threading
 
+
 class UILineWidget(QWidget):
-    def __init__(self, label, parent = None):
+    def __init__(self, label, parent=None):
         QWidget.__init__(self, parent=parent)
         self.Label1 = UIShipWidget()
         self.Label2 = UIShipWidget()
@@ -42,20 +39,20 @@ class UILineWidget(QWidget):
         if len(image_list) == 0 or len(name_list) == 0:
             return
         if len(name_list) == 2:
-            t1 = threading.Thread(target=self.Label1.update_image, args=(image_list[0],name_list[0])) 
-            t2 = threading.Thread(target=self.Label2.update_image, args=(image_list[1],name_list[1])) 
+            t1 = threading.Thread(target=self.Label1.update_image, args=(image_list[0], name_list[0]))
+            t2 = threading.Thread(target=self.Label2.update_image, args=(image_list[1], name_list[1]))
             t1.start()
             t2.start()
             t1.join()
             t2.join()
         elif len(name_list) == 1:
-            t1 = threading.Thread(target=self.Label1.update_image, args=(image_list[0],name_list[0])) 
+            t1 = threading.Thread(target=self.Label1.update_image, args=(image_list[0], name_list[0]))
             t1.start()
             t1.join()
         else:
-            t1 = threading.Thread(target=self.Label1.update_image, args=(image_list[0],name_list[0])) 
-            t2 = threading.Thread(target=self.Label2.update_image, args=(image_list[1],name_list[1])) 
-            t3 = threading.Thread(target=self.Label3.update_image, args=(image_list[2],name_list[2])) 
+            t1 = threading.Thread(target=self.Label1.update_image, args=(image_list[0], name_list[0]))
+            t2 = threading.Thread(target=self.Label2.update_image, args=(image_list[1], name_list[1]))
+            t3 = threading.Thread(target=self.Label3.update_image, args=(image_list[2], name_list[2]))
             t1.start()
             t2.start()
             t3.start()

@@ -1,14 +1,14 @@
-from PyQt5.QtWidgets import *
-from PyQt5.QtGui import QIcon, QPixmap
-from PyQt5.QtCore import QSize
+from PyQt6.QtWidgets import QLabel, QWidget, QVBoxLayout
+from PyQt6.QtGui import QPixmap
 
 import requests
 import urllib
 
 from pathlib import Path
 
+
 class UIShipWidget(QWidget):
-    def __init__(self, parent = None):
+    def __init__(self, parent=None):
         QWidget.__init__(self, parent=parent)
         self.Label = QLabel('Ship')
         self.Picture = QLabel('N/A')
